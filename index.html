@@ -9,6 +9,7 @@
         :root {
             --bg-orange: #F37431;
             --header-blue: #1A3D7C;
+            --header-line: #155A8D; /* Your new medium line color */
             --button-blue: #00A8FF;
             --accent-yellow: #FFD966;
             --white: #FFFFFF;
@@ -20,6 +21,7 @@
             background-color: var(--bg-orange);
             color: var(--white);
             text-align: center;
+            overflow-x: hidden;
         }
 
         /* Sticky Header */
@@ -32,20 +34,11 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 4px solid var(--header-blue);
+            border-bottom: 6px solid var(--header-line); /* Medium line color */
         }
 
-        .header-left {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .logo-img {
-            height: 50px; /* Adjust size to fit header */
-            border-radius: 5px;
-        }
-
+        .header-left { display: flex; align-items: center; gap: 15px; }
+        .logo-img { height: 50px; border-radius: 5px; }
         .site-name { font-weight: bold; font-size: 1.5rem; color: white; }
 
         nav a {
@@ -53,24 +46,12 @@
             text-decoration: none;
             margin: 0 10px;
             font-size: 0.9rem;
+            cursor: pointer;
         }
 
         /* Hero Section */
-        .hero {
-            padding: 50px 20px;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            align-items: center;
-            gap: 30px;
-        }
-
-        .hero-text h1 {
-            color: var(--accent-yellow);
-            font-size: 4rem;
-            margin: 0;
-            line-height: 0.9;
-        }
+        .hero { padding: 50px 20px; display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 30px; }
+        .hero-text h1 { color: var(--accent-yellow); font-size: 4rem; margin: 0; line-height: 0.9; }
 
         .pill-button {
             background-color: var(--button-blue);
@@ -85,35 +66,11 @@
             cursor: pointer;
         }
 
-        /* About Section */
-        .about-box {
-            background-color: var(--button-blue);
-            margin: 20px auto;
-            padding: 30px;
-            width: 80%;
-            border-radius: 20px;
-            text-align: left;
-        }
-
-        /* Product Grid */
-        .shop-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            padding: 40px;
-        }
-
-        .product-card {
-            background: none;
-            text-align: left;
-        }
-
-        .product-card img {
-            width: 100%;
-            border-radius: 30px;
-            background-color: #eee;
-            object-fit: cover;
-        }
+        /* Sections */
+        .about-box { background-color: var(--button-blue); margin: 20px auto; padding: 30px; width: 80%; border-radius: 20px; text-align: left; }
+        .shop-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; padding: 40px; }
+        .product-card { text-align: left; }
+        .product-card img { width: 100%; border-radius: 30px; background-color: #eee; }
 
         .select-color {
             background-color: var(--button-blue);
@@ -126,42 +83,36 @@
             margin-top: 5px;
             width: fit-content;
             font-family: 'Fredoka', sans-serif;
-            font-size: 1rem;
         }
+
+        /* Sliding Cart Sidebar */
+        #side-cart {
+            position: fixed;
+            right: -350px; /* Hidden by default */
+            top: 0;
+            width: 300px;
+            height: 100%;
+            background-color: var(--header-blue);
+            box-shadow: -5px 0 15px rgba(0,0,0,0.3);
+            transition: 0.3s;
+            z-index: 2000;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            text-align: left;
+        }
+
+        #side-cart.open { right: 0; }
+        .cart-item { border-bottom: 1px solid var(--button-blue); padding: 10px 0; font-size: 0.9rem; }
+        .close-cart { cursor: pointer; float: right; font-size: 1.5rem; }
 
         /* Wiggle Animation */
-        @keyframes wiggle {
-            0% { transform: translateX(0); }
-            25% { transform: translateX(-6px); }
-            50% { transform: translateX(6px); }
-            75% { transform: translateX(-6px); }
-            100% { transform: translateX(0); }
-        }
-
-        .error-wiggle {
-            animation: wiggle 0.3s ease-in-out;
-            box-shadow: 0 0 10px white;
-        }
+        @keyframes wiggle { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
+        .error-wiggle { animation: wiggle 0.3s ease-in-out; border: 2px solid white !important; }
 
         /* Custom Upload Section */
-        .upload-container {
-            border: 4px dashed white;
-            background-color: var(--button-blue);
-            padding: 40px;
-            border-radius: 20px;
-            max-width: 500px;
-            margin: 20px auto;
-        }
-
-        .text-input {
-            background-color: var(--button-blue);
-            border: 2px solid white;
-            border-radius: 50px;
-            padding: 15px;
-            width: 80%;
-            color: white;
-            margin-bottom: 20px;
-        }
+        .upload-container { border: 4px dashed white; background-color: var(--button-blue); padding: 40px; border-radius: 20px; max-width: 500px; margin: 20px auto; }
+        .text-input { background-color: var(--button-blue); border: 2px solid white; border-radius: 50px; padding: 15px; width: 80%; color: white; margin-bottom: 20px; }
 
         footer { padding: 40px; }
     </style>
@@ -174,10 +125,22 @@
             <div class="site-name">Quinntessential 3D</div>
         </div>
         <nav>
-            <a href="#">Home</a> | <a href="#">Shop</a> | <a href="#">Custom Orders</a> | <a href="#">About</a> | <a href="#">Contact</a>
+            <a href="#">Home</a> | 
+            <a href="#shop">Shop</a> | 
+            <a href="#custom">Custom Orders</a> | 
+            <a href="#about">About</a> | 
+            <a href="mailto:quinntessential3d@gmail.com">Contact</a>
         </nav>
-        <div class="cart-icon" style="font-size: 1.5rem; cursor: pointer;">🛒</div>
+        <div class="cart-icon" onclick="toggleCart()" style="font-size: 1.5rem; cursor: pointer;">🛒 <span id="cart-count">0</span></div>
     </header>
+
+    <div id="side-cart">
+        <span class="close-cart" onclick="toggleCart()">×</span>
+        <h2>Your Cart</h2>
+        <div id="cart-items-list" style="flex-grow: 1; overflow-y: auto;">
+            </div>
+        <button class="pill-button" style="width: 100%; margin-top: 20px;">Proceed to Checkout</button>
+    </div>
 
     <section class="hero">
         <div class="hero-text">
@@ -187,49 +150,30 @@
             <a href="#custom" class="pill-button">Custom Orders</a>
         </div>
         <div class="hero-image">
-            <div style="width:300px; height:300px; border-radius: 30px; background: var(--accent-yellow); display: flex; align-items: center; justify-content: center;">[Stand Image]</div>
+            <div style="width:300px; height:300px; border-radius: 30px; background: var(--accent-yellow); display: flex; align-items: center; justify-content: center;">[Main Photo]</div>
         </div>
     </section>
 
     <section id="about" class="about-box">
         <h2>About Me</h2>
-        <p>Hi, I'm Quinn!</p>
-        <p>I'm a 12-year-old boy who loves turning ideas into real things with my 3D printer.</p>
-        <h3>What I Make</h3>
-        <p>I make all kinds of stuff, from custom gadgets to fidgets, and I'm always trying out new designs.</p>
-        <h3>How It Started</h3>
-        <p>What started as a fun hobby has turned into a small business, and I can't wait to see what I create next!</p>
+        <p>Hi, I'm Quinn! I'm a 12-year-old boy who loves turning ideas into real things with my 3D printer.</p>
     </section>
 
     <section id="shop" class="shop-grid">
-        <div class="product-card" id="item-glasses">
-            <div style="width:100%; height:200px; background:#ddd; border-radius:30px;"></div>
-            <p><strong>Glasses holder for the car sun visor</strong> <span class="price-tag">4.99$</span></p>
-            <select class="select-color color-dropdown">
-                <option value="">select colour ↓</option>
-                <option>Red</option><option>Blue</option><option>Green</option><option>White</option>
-                <option>Black</option><option>Sparkly purple</option><option>Pink</option>
-                <option>gold</option><option>Yellow</option><option>Orange</option><option>Clear</option>
-            </select>
-            <button class="select-color" onclick="addToCart('Glasses Holder', 'item-glasses')">add to cart 🛒</button>
-        </div>
-
         <div class="product-card" id="item-phone">
             <div style="width:100%; height:200px; background:#ddd; border-radius:30px;"></div>
             <p><strong>phone stand</strong> <span class="price-tag">11.99$</span></p>
             <select class="select-color color-dropdown">
                 <option value="">select colour ↓</option>
-                <option>Red</option><option>Blue</option><option>Green</option><option>White</option>
-                <option>Black</option><option>Sparkly purple</option><option>Pink</option>
-                <option>gold</option><option>Yellow</option><option>Orange</option><option>Clear</option>
+                <option>Red</option><option>Blue</option><option>Green</option><option>White</option><option>Black</option><option>Sparkly purple</option><option>Pink</option><option>gold</option><option>Yellow</option><option>Orange</option><option>Clear</option>
             </select>
-            <button class="select-color" onclick="addToCart('Phone Stand', 'item-phone')">add to cart 🛒</button>
+            <button class="select-color" onclick="addItem('phone stand', 'item-phone', '11.99$')">add to cart 🛒</button>
         </div>
 
         <div class="product-card">
             <div style="width:100%; height:200px; background:#ddd; border-radius:30px;"></div>
             <p><strong>SpongeBob doodle pencil holder</strong> <span class="price-tag">8.99$</span></p>
-            <button class="select-color" onclick="addToCart('SpongeBob pencil holder', null)">add to cart 🛒</button>
+            <button class="select-color" onclick="addItem('SpongeBob pencil holder', null, '8.99$')">add to cart 🛒</button>
         </div>
     </section>
 
@@ -237,40 +181,51 @@
         <div class="upload-container">
             <div style="font-size: 50px;">↑</div>
             <h2>drag or drop files</h2>
-            <p>(Supports STL and OBJ)</p>
         </div>
-        <center>
-            <select class="select-color">
-                <option>Select a colour ↓</option>
-                <option>Red</option><option>Blue</option><option>Green</option><option>White</option>
-                <option>Black</option><option>Sparkly purple</option><option>Pink</option>
-                <option>gold</option><option>Yellow</option><option>Orange</option><option>Clear</option>
-            </select>
-            <br>
-            <input type="text" class="text-input" placeholder="do you want anything done to it optional type here">
-        </center>
     </section>
 
     <script>
-        function addToCart(itemName, elementId) {
-            // SpongeBob check (null elementId means no color required)
-            if (elementId === null) {
-                alert(itemName + " added to cart!");
-                return;
+        let cart = [];
+
+        function toggleCart() {
+            document.getElementById('side-cart').classList.toggle('open');
+        }
+
+        function addItem(name, elementId, price) {
+            let color = "Fixed Color";
+            
+            if (elementId !== null) {
+                const card = document.getElementById(elementId);
+                const dropdown = card.querySelector('.color-dropdown');
+                if (dropdown.value === "") {
+                    dropdown.classList.add('error-wiggle');
+                    setTimeout(() => dropdown.classList.remove('error-wiggle'), 300);
+                    return;
+                }
+                color = dropdown.value;
             }
 
-            const card = document.getElementById(elementId);
-            const dropdown = card.querySelector('.color-dropdown');
+            // Add to data
+            cart.push({ name, color, price });
+            updateCartUI();
             
-            if (dropdown.value === "") {
-                // Wiggle the dropdown
-                dropdown.classList.add('error-wiggle');
-                setTimeout(() => {
-                    dropdown.classList.remove('error-wiggle');
-                }, 300);
-            } else {
-                alert(itemName + " (" + dropdown.value + ") added to cart!");
-            }
+            // Open cart automatically to show it worked
+            document.getElementById('side-cart').classList.add('open');
+        }
+
+        function updateCartUI() {
+            const list = document.getElementById('cart-items-list');
+            const count = document.getElementById('cart-count');
+            list.innerHTML = "";
+            
+            cart.forEach((item, index) => {
+                list.innerHTML += `<div class="cart-item">
+                    <strong>${item.name}</strong><br>
+                    Color: ${item.color} | ${item.price}
+                </div>`;
+            });
+            
+            count.innerText = cart.length;
         }
     </script>
 
