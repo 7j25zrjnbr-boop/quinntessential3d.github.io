@@ -25,17 +25,28 @@
         /* Sticky Header */
         header {
             background-color: var(--header-blue);
-            padding: 15px 5%;
+            padding: 10px 5%;
             position: sticky;
             top: 0;
             z-index: 1000;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 4px solid var(--header-blue); /* Base line color */
+            border-bottom: 4px solid var(--header-blue);
         }
 
-        .logo { font-weight: bold; font-size: 1.5rem; }
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo-img {
+            height: 50px; /* Adjust size to fit header */
+            border-radius: 5px;
+        }
+
+        .site-name { font-weight: bold; font-size: 1.5rem; color: white; }
 
         nav a {
             color: white;
@@ -70,6 +81,8 @@
             margin: 5px;
             text-decoration: none;
             font-weight: bold;
+            border: none;
+            cursor: pointer;
         }
 
         /* About Section */
@@ -99,9 +112,8 @@
             width: 100%;
             border-radius: 30px;
             background-color: #eee;
+            object-fit: cover;
         }
-
-        .price-tag { font-weight: bold; }
 
         .select-color {
             background-color: var(--button-blue);
@@ -113,21 +125,32 @@
             display: block;
             margin-top: 5px;
             width: fit-content;
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1rem;
+        }
+
+        /* Wiggle Animation */
+        @keyframes wiggle {
+            0% { transform: translateX(0); }
+            25% { transform: translateX(-6px); }
+            50% { transform: translateX(6px); }
+            75% { transform: translateX(-6px); }
+            100% { transform: translateX(0); }
+        }
+
+        .error-wiggle {
+            animation: wiggle 0.3s ease-in-out;
+            box-shadow: 0 0 10px white;
         }
 
         /* Custom Upload Section */
-        .custom-section {
-            background-color: var(--bg-orange);
-            padding: 50px 20px;
-        }
-
         .upload-container {
             border: 4px dashed white;
             background-color: var(--button-blue);
             padding: 40px;
             border-radius: 20px;
             max-width: 500px;
-            margin: 0 auto;
+            margin: 20px auto;
         }
 
         .text-input {
@@ -136,8 +159,8 @@
             border-radius: 50px;
             padding: 15px;
             width: 80%;
-            margin-top: 20px;
             color: white;
+            margin-bottom: 20px;
         }
 
         footer { padding: 40px; }
@@ -146,11 +169,14 @@
 <body>
 
     <header>
-        <div class="logo">Quinntessential 3D</div>
+        <div class="header-left">
+            <img src="IMG_0598.jpeg" alt="Logo" class="logo-img">
+            <div class="site-name">Quinntessential 3D</div>
+        </div>
         <nav>
             <a href="#">Home</a> | <a href="#">Shop</a> | <a href="#">Custom Orders</a> | <a href="#">About</a> | <a href="#">Contact</a>
         </nav>
-        <div class="cart-icon">🛒</div>
+        <div class="cart-icon" style="font-size: 1.5rem; cursor: pointer;">🛒</div>
     </header>
 
     <section class="hero">
@@ -161,7 +187,7 @@
             <a href="#custom" class="pill-button">Custom Orders</a>
         </div>
         <div class="hero-image">
-            <img src="main-stand.png" alt="3D Printed Stand" style="width:300px; border-radius: 30px; background: var(--accent-yellow);">
+            <div style="width:300px; height:300px; border-radius: 30px; background: var(--accent-yellow); display: flex; align-items: center; justify-content: center;">[Stand Image]</div>
         </div>
     </section>
 
@@ -176,32 +202,34 @@
     </section>
 
     <section id="shop" class="shop-grid">
-        <div class="product-card">
-            <img src="phone-stand.jpg" alt="Phone Stand">
-            <p><strong>Phone Stand</strong> <span class="price-tag">11.99$</span></p>
-            <button class="select-color">add to cart 🛒</button>
-            <select class="select-color">
-                <option>Select Color ↓</option>
+        <div class="product-card" id="item-glasses">
+            <div style="width:100%; height:200px; background:#ddd; border-radius:30px;"></div>
+            <p><strong>Glasses holder for the car sun visor</strong> <span class="price-tag">4.99$</span></p>
+            <select class="select-color color-dropdown">
+                <option value="">select colour ↓</option>
                 <option>Red</option><option>Blue</option><option>Green</option><option>White</option>
                 <option>Black</option><option>Sparkly purple</option><option>Pink</option>
-                <option>Gold</option><option>Yellow</option><option>Orange</option><option>Clear (Translucent)</option>
+                <option>gold</option><option>Yellow</option><option>Orange</option><option>Clear</option>
             </select>
+            <button class="select-color" onclick="addToCart('Glasses Holder', 'item-glasses')">add to cart 🛒</button>
+        </div>
+
+        <div class="product-card" id="item-phone">
+            <div style="width:100%; height:200px; background:#ddd; border-radius:30px;"></div>
+            <p><strong>phone stand</strong> <span class="price-tag">11.99$</span></p>
+            <select class="select-color color-dropdown">
+                <option value="">select colour ↓</option>
+                <option>Red</option><option>Blue</option><option>Green</option><option>White</option>
+                <option>Black</option><option>Sparkly purple</option><option>Pink</option>
+                <option>gold</option><option>Yellow</option><option>Orange</option><option>Clear</option>
+            </select>
+            <button class="select-color" onclick="addToCart('Phone Stand', 'item-phone')">add to cart 🛒</button>
         </div>
 
         <div class="product-card">
-            <img src="spongebob.jpg" alt="SpongeBob Holder">
+            <div style="width:100%; height:200px; background:#ddd; border-radius:30px;"></div>
             <p><strong>SpongeBob doodle pencil holder</strong> <span class="price-tag">8.99$</span></p>
-            <button class="select-color">add to cart 🛒</button>
-            </div>
-
-        <div class="product-card">
-            <img src="cat-bookmark.jpg" alt="Cat Bookmark">
-            <p><strong>Cat Bookmark</strong> <span class="price-tag">3.49$</span></p>
-            <button class="select-color">add to cart 🛒</button>
-            <select class="select-color">
-                <option>Select Color ↓</option>
-                <option>Black</option><option>White</option><option>Orange</option>
-            </select>
+            <button class="select-color" onclick="addToCart('SpongeBob pencil holder', null)">add to cart 🛒</button>
         </div>
     </section>
 
@@ -211,15 +239,40 @@
             <h2>drag or drop files</h2>
             <p>(Supports STL and OBJ)</p>
         </div>
-        <select class="select-color" style="margin: 20px auto;">
-            <option>Select a colour ↓</option>
-            <option>Red</option><option>Blue</option><option>Green</option>
-            <option>White</option><option>Black</option><option>Sparkly purple</option>
-            <option>Pink</option><option>Gold</option><option>Yellow</option>
-            <option>Orange</option><option>Clear</option>
-        </select>
-        <input type="text" class="text-input" placeholder="do you want anything done to it optional type here">
+        <center>
+            <select class="select-color">
+                <option>Select a colour ↓</option>
+                <option>Red</option><option>Blue</option><option>Green</option><option>White</option>
+                <option>Black</option><option>Sparkly purple</option><option>Pink</option>
+                <option>gold</option><option>Yellow</option><option>Orange</option><option>Clear</option>
+            </select>
+            <br>
+            <input type="text" class="text-input" placeholder="do you want anything done to it optional type here">
+        </center>
     </section>
+
+    <script>
+        function addToCart(itemName, elementId) {
+            // SpongeBob check (null elementId means no color required)
+            if (elementId === null) {
+                alert(itemName + " added to cart!");
+                return;
+            }
+
+            const card = document.getElementById(elementId);
+            const dropdown = card.querySelector('.color-dropdown');
+            
+            if (dropdown.value === "") {
+                // Wiggle the dropdown
+                dropdown.classList.add('error-wiggle');
+                setTimeout(() => {
+                    dropdown.classList.remove('error-wiggle');
+                }, 300);
+            } else {
+                alert(itemName + " (" + dropdown.value + ") added to cart!");
+            }
+        }
+    </script>
 
     <footer>
         <h2>Contact Me</h2>
