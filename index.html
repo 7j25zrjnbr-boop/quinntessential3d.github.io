@@ -103,6 +103,28 @@ nav a { color: white; text-decoration: none; margin: 0 10px; font-weight: bold; 
     pointer-events: none;
     transition: all 0.3s ease;
 }
+
+/* Header cart floating badge */
+#cart-btn { position: relative; display: inline-block; }
+#cart-badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background: var(--accent-yellow);
+    color: #333;
+    font-weight: bold;
+    padding: 5px 8px;
+    border-radius: 50%;
+    font-size: 0.8rem;
+    opacity: 0;
+    pointer-events: none;
+    animation: floatFade 1.5s forwards;
+}
+@keyframes floatFade {
+    0% { transform: translateY(0); opacity: 1; }
+    50% { transform: translateY(-20px); opacity: 1; }
+    100% { transform: translateY(-30px); opacity: 0; }
+}
 </style>
 </head>
 <body>
@@ -115,7 +137,7 @@ nav a { color: white; text-decoration: none; margin: 0 10px; font-weight: bold; 
     <nav>
         <a href="#">Home</a> | <a href="#shop">Shop</a> | <a href="#custom">Custom</a> | <a href="#about">About</a>
     </nav>
-    <div onclick="toggleCart()" style="font-size: 1.5rem; cursor: pointer;">🛒 <span id="cart-count">0</span></div>
+    <div id="cart-btn" onclick="toggleCart()" style="font-size: 1.5rem; cursor: pointer;">🛒 <span id="cart-count">0</span></div>
 </header>
 
 <div id="side-cart">
@@ -133,9 +155,7 @@ nav a { color: white; text-decoration: none; margin: 0 10px; font-weight: bold; 
         <input type="text" name="city" id="cust-city" class="modal-input" placeholder="City" required>
         <input type="tel" name="phone" id="cust-phone" class="modal-input" placeholder="Phone Number" required>
         <input type="email" name="email" id="cust-email" class="modal-input" placeholder="Your Email" required>
-
         <input type="hidden" name="order" id="order-data">
-
         <button type="submit" class="pill-button" style="width: 100%; background: var(--accent-yellow); color: #333; margin-top: 15px;">Place Order</button>
         <button type="button" class="pill-button" onclick="closeCheckout()" style="width: 100%; background: none; border: 1px solid white;">Cancel</button>
     </form>
@@ -226,6 +246,7 @@ function addItem(name, id, price) {
     cart.push({name, color, price});
     updateCart();
     showToast(`${name} added to cart!`);
+    showCartBadge(1);
     if(id){
         showBadge(id);
     }
@@ -238,6 +259,7 @@ function addCustom() {
     cart.push({name: "Custom: "+f.name, color: c, price: "TBD", note: document.getElementById('c-note').value});
     updateCart();
     showToast(`Custom: ${f.name} added to cart!`);
+    showCartBadge(1);
 }
 
 function showBadge(id){
@@ -250,6 +272,15 @@ function showBadge(id){
         badge.style.opacity = 0;
         badgeCounts[id] = 0;
     }, 1000);
+}
+
+function showCartBadge(num){
+    const cartBtn = document.getElementById('cart-btn');
+    const badge = document.createElement('span');
+    badge.id = 'cart-badge';
+    badge.innerText = num;
+    cartBtn.appendChild(badge);
+    setTimeout(()=>{ cartBtn.removeChild(badge); }, 1500);
 }
 
 function updateCart() {
