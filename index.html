@@ -15,7 +15,7 @@
             --white: #FFFFFF;
         }
 
-        body { margin: 0; font-family: 'Fredoka', sans-serif; background-color: var(--bg-orange); color: var(--white); text-align: center; scroll-behavior: smooth; }
+        body { margin: 0; font-family: 'Fredoka', sans-serif; background-color: var(--bg-orange); color: var(--white); text-align: center; }
 
         header {
             background-color: var(--header-blue); padding: 10px 5%; position: sticky; top: 0; z-index: 1000;
@@ -26,10 +26,10 @@
         .logo-img { height: 50px; border-radius: 5px; }
         nav a { color: white; text-decoration: none; margin: 0 10px; font-weight: bold; cursor: pointer; }
 
-        /* 1/4 Screen Side Cart Bubble */
+        /* Small Bubble Cart - 1/4 of screen */
         #side-cart {
             position: fixed; right: 20px; top: 80px; width: 25%; min-width: 280px;
-            height: 75vh; background-color: var(--header-blue); box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            height: 70vh; background-color: var(--header-blue); box-shadow: 0 10px 30px rgba(0,0,0,0.3);
             border-radius: 30px; transition: 0.3s; z-index: 2000; padding: 20px; display: none; flex-direction: column; text-align: left;
         }
 
@@ -49,7 +49,6 @@
         @keyframes wiggle { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
         .error-wiggle { animation: wiggle 0.3s ease-in-out; border: 2px solid #ff4d4d !important; }
 
-        /* Product Display */
         .shop-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; padding: 40px; }
         .product-card { text-align: left; }
         .product-card img { width: 100%; border-radius: 30px; background-color: #eee; aspect-ratio: 1/1; object-fit: cover; }
@@ -59,7 +58,7 @@
             border-radius: 50px; border: none; font-weight: bold; cursor: pointer; margin-top: 5px; font-family: 'Fredoka';
         }
 
-        .upload-area { border: 4px dashed white; background: var(--button-blue); border-radius: 30px; padding: 40px; margin: 40px auto; max-width: 500px; }
+        .upload-area { border: 4px dashed white; background: var(--button-blue); border-radius: 30px; padding: 40px; margin: 20px auto; max-width: 500px; }
     </style>
 </head>
 <body>
@@ -70,20 +69,20 @@
             <div style="font-size: 1.2rem; font-weight: bold;">Quinntessential 3D</div>
         </div>
         <nav>
-            <a href="#">Home</a> | <a href="#shop">Shop</a> | <a href="#custom">Custom</a> | <a href="#about">About</a>
+            <a href="#">Home</a> | <a href="#shop">Shop</a> | <a href="#custom">Custom</a>
         </nav>
         <div onclick="toggleCart()" style="font-size: 1.5rem; cursor: pointer;">🛒 <span id="cart-count">0</span></div>
     </header>
 
     <div id="side-cart">
         <span onclick="toggleCart()" style="cursor:pointer; float:right; font-size:1.5rem;">×</span>
-        <h3 style="margin-top:0">Your Cart</h3>
+        <h3>Your Cart</h3>
         <div id="cart-items-list" style="flex-grow: 1; overflow-y: auto;"></div>
         <button class="pill-button" onclick="openCheckout()" style="width: 100%; background: var(--accent-yellow); color: #333;">Proceed to Checkout</button>
     </div>
 
     <div id="checkout-modal">
-        <h2 style="margin-top:0">Payment & Shipping</h2>
+        <h2 style="margin-top:0">Checkout</h2>
         <input type="text" id="cust-address" class="modal-input" placeholder="Street Address *">
         <input type="text" id="cust-postal" class="modal-input" placeholder="Postal Code *">
         <input type="text" id="cust-city" class="modal-input" placeholder="City *">
@@ -101,99 +100,20 @@
         <button onclick="closeCheckout()" style="background:none; border:none; color:white; cursor:pointer; margin-top:10px;">Cancel</button>
     </div>
 
-    <section class="hero" style="padding: 60px 20px;">
-        <h1 style="color: var(--accent-yellow); font-size: 4rem; margin: 0;">PRINT IT<br>LOVE IT</h1>
-        <p>3D Printing by Quinn</p>
-    </section>
-
-    <section id="shop" class="shop-grid">
-        <div class="product-card" id="p1">
-            <div style="height:200px; background:#ccc; border-radius:30px;"></div>
-            <p><strong>Phone Stand</strong> 11.99$</p>
-            <select class="select-color color-dropdown">
-                <option value="">select colour ↓</option>
-                <option>Red</option><option>Blue</option><option>Green</option><option>White</option><option>Black</option><option>Sparkly purple</option><option>Pink</option><option>gold</option><option>Yellow</option><option>Orange</option><option>Clear</option>
-            </select>
-            <button class="pill-button" onclick="addItem('Phone Stand', 'p1')">add to cart 🛒</button>
-        </div>
-
-        <div class="product-card">
-            <div style="height:200px; background:#ccc; border-radius:30px;"></div>
-            <p><strong>SpongeBob Holder</strong> 8.99$</p>
-            <button class="pill-button" onclick="addItem('SpongeBob Holder', null)">add to cart 🛒</button>
-        </div>
-
-        <div class="product-card" id="p3">
-            <div style="height:200px; background:#ccc; border-radius:30px;"></div>
-            <p><strong>Dinosaur Holder</strong> 10.99$</p>
-            <select class="select-color color-dropdown">
-                <option value="">select colour ↓</option>
-                <option>Green</option><option>Orange</option><option>Black</option>
-            </select>
-            <button class="pill-button" onclick="addItem('Dinosaur Holder', 'p3')">add to cart 🛒</button>
-        </div>
-    </section>
-
-    <section id="custom" class="upload-area">
-        <input type="file" id="fileIn" style="display:none" onchange="document.getElementById('file-msg').innerText=this.files[0].name">
-        <div onclick="document.getElementById('fileIn').click()" style="cursor:pointer">
-            <div style="font-size:40px">↑</div>
-            <h2 id="file-msg">drag or drop STL/OBJ</h2>
-        </div>
-        <select class="select-color" id="c-color">
-            <option value="">Select colour ↓</option>
-            <option>Red</option><option>Blue</option><option>Green</option><option>White</option><option>Black</option><option>Sparkly purple</option><option>Pink</option><option>gold</option><option>Yellow</option><option>Orange</option><option>Clear</option>
-        </select>
-        <button class="pill-button" onclick="addCustom()">Add Custom Order 🛒</button>
-    </section>
-
-    <section id="about" class="about-box">
-        <h2>About Me</h2>
-        <p>I'm a 12-year-old boy who loves turning ideas into real things with my 3D printer.</p>
-    </section>
-
     <script>
         let cart = [];
-
         function toggleCart() { 
             let sc = document.getElementById('side-cart');
             sc.style.display = (sc.style.display === 'flex') ? 'none' : 'flex';
         }
 
-        function addItem(name, id) {
+        function addItem(name, id, price) {
             let color = "Fixed Color";
             if(id) {
                 let d = document.getElementById(id).querySelector('.color-dropdown');
                 if(!d.value) { d.classList.add('error-wiggle'); setTimeout(()=>d.classList.remove('error-wiggle'),300); return; }
                 color = d.value;
             }
-            cart.push({name, color});
+            cart.push({name, color, price});
             updateCart();
         }
-
-        function addCustom() {
-            let f = document.getElementById('fileIn').files[0];
-            let c = document.getElementById('c-color').value;
-            if(!f || !c) { alert("Upload a file and select a color!"); return; }
-            cart.push({name: "Custom: " + f.name, color: c});
-            updateCart();
-        }
-
-        function updateCart() {
-            document.getElementById('cart-count').innerText = cart.length;
-            document.getElementById('cart-items-list').innerHTML = cart.map(i => `<div style="padding:10px 0; border-bottom:1px solid #00A8FF"><b>${i.name}</b><br>${i.color}</div>`).join('');
-            document.getElementById('side-cart').style.display = 'flex';
-        }
-
-        function openCheckout() { if(cart.length > 0) document.getElementById('checkout-modal').style.display = 'block'; }
-        function closeCheckout() { document.getElementById('checkout-modal').style.display = 'none'; }
-
-        function processPayment() {
-            const required = ['cust-address', 'cust-postal', 'cust-city', 'cust-phone', 'card-num', 'card-exp', 'card-cvc'];
-            let valid = true;
-
-            required.forEach(id => {
-                let el = document.getElementById(id);
-                if(!el.value) {
-                    el.classList.add('error-wiggle');
-                    setTimeout(() => el.classList.remove('error-wiggle'),
