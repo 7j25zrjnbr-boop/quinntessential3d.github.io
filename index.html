@@ -1,385 +1,230 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Quinntessential Freezy 3D Prints</title>
-<style>
-  /* General Styles */
-  body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background-color: #F37431;
-    color: #000;
-  }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quinntessential 3D</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-orange: #F37431;
+            --header-blue: #1A3D7C;
+            --button-blue: #00A8FF;
+            --accent-yellow: #FFD966;
+            --white: #FFFFFF;
+        }
 
-  a { text-decoration: none; color: inherit; }
+        body {
+            margin: 0;
+            font-family: 'Fredoka', sans-serif;
+            background-color: var(--bg-orange);
+            color: var(--white);
+            text-align: center;
+        }
 
-  /* Header */
-  header {
-    position: sticky;
-    top: 0;
-    background: #fff;
-    border-bottom: 5px solid #1A3D7C;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 20px;
-    z-index: 1000;
-  }
+        /* Sticky Header */
+        header {
+            background-color: var(--header-blue);
+            padding: 15px 5%;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 4px solid var(--header-blue); /* Base line color */
+        }
 
-  header .logo {
-    font-weight: bold;
-    font-size: 20px;
-  }
+        .logo { font-weight: bold; font-size: 1.5rem; }
 
-  nav a {
-    margin-left: 20px;
-    font-weight: bold;
-    cursor: pointer;
-  }
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin: 0 10px;
+            font-size: 0.9rem;
+        }
 
-  /* Hero */
-  .hero {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    padding: 50px 20px;
-    flex-wrap: wrap;
-  }
+        /* Hero Section */
+        .hero {
+            padding: 50px 20px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            gap: 30px;
+        }
 
-  .hero h1 {
-    font-size: 48px;
-    font-weight: bold;
-    text-transform: uppercase;
-  }
+        .hero-text h1 {
+            color: var(--accent-yellow);
+            font-size: 4rem;
+            margin: 0;
+            line-height: 0.9;
+        }
 
-  .hero img {
-    max-width: 300px;
-    width: 100%;
-    border-radius: 10px;
-  }
+        .pill-button {
+            background-color: var(--button-blue);
+            color: white;
+            padding: 10px 25px;
+            border-radius: 50px;
+            display: inline-block;
+            margin: 5px;
+            text-decoration: none;
+            font-weight: bold;
+        }
 
-  /* About Section */
-  section.about, section.projects, section.contact {
-    padding: 50px 20px;
-  }
+        /* About Section */
+        .about-box {
+            background-color: var(--button-blue);
+            margin: 20px auto;
+            padding: 30px;
+            width: 80%;
+            border-radius: 20px;
+            text-align: left;
+        }
 
-  section h2 {
-    font-size: 36px;
-    margin-bottom: 20px;
-  }
+        /* Product Grid */
+        .shop-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            padding: 40px;
+        }
 
-  /* Projects Grid */
-  .projects-grid {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-  }
+        .product-card {
+            background: none;
+            text-align: left;
+        }
 
-  .product-card {
-    background: #fff;
-    border-radius: 10px;
-    padding: 15px;
-    width: calc(33% - 20px);
-    box-sizing: border-box;
-  }
+        .product-card img {
+            width: 100%;
+            border-radius: 30px;
+            background-color: #eee;
+        }
 
-  .product-card img {
-    width: 100%;
-    border-radius: 10px;
-  }
+        .price-tag { font-weight: bold; }
 
-  .product-card h3 {
-    margin: 10px 0 5px 0;
-  }
+        .select-color {
+            background-color: var(--button-blue);
+            border: none;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            display: block;
+            margin-top: 5px;
+            width: fit-content;
+        }
 
-  .product-card select, .product-card input[type="file"] {
-    width: 100%;
-    margin: 5px 0;
-  }
+        /* Custom Upload Section */
+        .custom-section {
+            background-color: var(--bg-orange);
+            padding: 50px 20px;
+        }
 
-  .product-card button {
-    width: 100%;
-    padding: 10px;
-    font-weight: bold;
-    cursor: pointer;
-    background-color: #00A8FF;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    transition: transform 0.2s;
-  }
+        .upload-container {
+            border: 4px dashed white;
+            background-color: var(--button-blue);
+            padding: 40px;
+            border-radius: 20px;
+            max-width: 500px;
+            margin: 0 auto;
+        }
 
-  .product-card button:disabled {
-    background-color: grey;
-    cursor: not-allowed;
-  }
+        .text-input {
+            background-color: var(--button-blue);
+            border: 2px solid white;
+            border-radius: 50px;
+            padding: 15px;
+            width: 80%;
+            margin-top: 20px;
+            color: white;
+        }
 
-  /* Wiggle animation */
-  @keyframes wiggle {
-    0% { transform: rotate(0deg); }
-    25% { transform: rotate(5deg); }
-    50% { transform: rotate(-5deg); }
-    75% { transform: rotate(5deg); }
-    100% { transform: rotate(0deg); }
-  }
-
-  .wiggle {
-    animation: wiggle 0.3s;
-  }
-
-  /* Cart */
-  #cart {
-    position: fixed;
-    right: 20px;
-    top: 80px;
-    background: #fff;
-    border-radius: 10px;
-    padding: 20px;
-    width: 300px;
-    max-height: 80vh;
-    overflow-y: auto;
-    box-shadow: 0 0 10px rgba(0,0,0,0.3);
-  }
-
-  #cart h2 {
-    margin-top: 0;
-  }
-
-  .cart-item {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 10px;
-    align-items: center;
-  }
-
-  .cart-item button {
-    padding: 2px 5px;
-    background: red;
-    color: #fff;
-    border: none;
-    border-radius: 3px;
-    cursor: pointer;
-  }
-
-  .checkout-btn {
-    width: 100%;
-    padding: 10px;
-    background: #1A3D7C;
-    color: #fff;
-    font-weight: bold;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-
-  /* Contact */
-  .contact a {
-    color: #00A8FF;
-    font-weight: bold;
-  }
-
-  @media (max-width: 900px) {
-    .product-card { width: calc(50% - 20px); }
-  }
-  @media (max-width: 600px) {
-    .hero { flex-direction: column; }
-    .product-card { width: 100%; }
-  }
-</style>
+        footer { padding: 40px; }
+    </style>
 </head>
 <body>
 
-<header>
-  <div class="logo">Quinntessential Freezy</div>
-  <nav>
-    <a href="#about">About</a>
-    <a href="#projects">Order</a>
-    <a href="#contact">Contact</a>
-  </nav>
-</header>
+    <header>
+        <div class="logo">Quinntessential 3D</div>
+        <nav>
+            <a href="#">Home</a> | <a href="#">Shop</a> | <a href="#">Custom Orders</a> | <a href="#">About</a> | <a href="#">Contact</a>
+        </nav>
+        <div class="cart-icon">🛒</div>
+    </header>
 
-<section class="hero">
-  <h1>PRINT YOUR DREAMS</h1>
-  <img src="phone-stand.jpg" alt="Phone Stand">
-</section>
+    <section class="hero">
+        <div class="hero-text">
+            <h1>PRINT IT<br>LOVE IT</h1>
+            <a href="#shop" class="pill-button">Shop Now</a>
+            <a href="#about" class="pill-button">About Us</a><br>
+            <a href="#custom" class="pill-button">Custom Orders</a>
+        </div>
+        <div class="hero-image">
+            <img src="main-stand.png" alt="3D Printed Stand" style="width:300px; border-radius: 30px; background: var(--accent-yellow);">
+        </div>
+    </section>
 
-<section class="about" id="about">
-  <h2>About Me</h2>
-  <p>Hi! I’m Quinntessential Freezy and I create amazing 3D printed objects from dreams to reality. Check out my projects and place your custom orders below!</p>
-</section>
+    <section id="about" class="about-box">
+        <h2>About Me</h2>
+        <p>Hi, I'm Quinn!</p>
+        <p>I'm a 12-year-old boy who loves turning ideas into real things with my 3D printer.</p>
+        <h3>What I Make</h3>
+        <p>I make all kinds of stuff, from custom gadgets to fidgets, and I'm always trying out new designs.</p>
+        <h3>How It Started</h3>
+        <p>What started as a fun hobby has turned into a small business, and I can't wait to see what I create next!</p>
+    </section>
 
-<section class="projects" id="projects">
-  <h2>Projects</h2>
-  <div class="projects-grid">
-    <!-- SpongeBob Product -->
-    <div class="product-card" data-product="SpongeBob Doodle Pencil Holder">
-      <h3>SpongeBob Doodle Pencil Holder</h3>
-      <img src="spongebob.jpg" alt="SpongeBob Pencil Holder">
-      <input type="file" accept=".stl,.obj">
-      <button class="add-to-cart">Add to Cart</button>
-    </div>
+    <section id="shop" class="shop-grid">
+        <div class="product-card">
+            <img src="phone-stand.jpg" alt="Phone Stand">
+            <p><strong>Phone Stand</strong> <span class="price-tag">11.99$</span></p>
+            <button class="select-color">add to cart 🛒</button>
+            <select class="select-color">
+                <option>Select Color ↓</option>
+                <option>Red</option><option>Blue</option><option>Green</option><option>White</option>
+                <option>Black</option><option>Sparkly purple</option><option>Pink</option>
+                <option>Gold</option><option>Yellow</option><option>Orange</option><option>Clear (Translucent)</option>
+            </select>
+        </div>
 
-    <!-- Dinosaur Product -->
-    <div class="product-card" data-product="Dinosaur Pencil Holder">
-      <h3>Dinosaur Pencil Holder</h3>
-      <img src="dinosaur.jpg" alt="Dinosaur Pencil Holder">
-      <select>
-        <option value="">Select Colour</option>
-        <option>Red</option>
-        <option>Blue</option>
-        <option>Green</option>
-        <option>White</option>
-        <option>Black</option>
-        <option>Sparkly Purple</option>
-        <option>Pink</option>
-        <option>Gold</option>
-        <option>Yellow</option>
-        <option>Orange</option>
-        <option>Clear</option>
-      </select>
-      <input type="file" accept=".stl,.obj">
-      <button class="add-to-cart" disabled>Add to Cart</button>
-    </div>
+        <div class="product-card">
+            <img src="spongebob.jpg" alt="SpongeBob Holder">
+            <p><strong>SpongeBob doodle pencil holder</strong> <span class="price-tag">8.99$</span></p>
+            <button class="select-color">add to cart 🛒</button>
+            </div>
 
-    <!-- Cat Bookmark -->
-    <div class="product-card" data-product="Cat Bookmark">
-      <h3>Cat Bookmark</h3>
-      <img src="cat-bookmark.jpg" alt="Cat Bookmark">
-      <select>
-        <option value="">Select Colour</option>
-        <option>Red</option>
-        <option>Blue</option>
-        <option>Green</option>
-        <option>White</option>
-        <option>Black</option>
-        <option>Sparkly Purple</option>
-        <option>Pink</option>
-        <option>Gold</option>
-        <option>Yellow</option>
-        <option>Orange</option>
-        <option>Clear</option>
-      </select>
-      <input type="file" accept=".stl,.obj">
-      <button class="add-to-cart" disabled>Add to Cart</button>
-    </div>
+        <div class="product-card">
+            <img src="cat-bookmark.jpg" alt="Cat Bookmark">
+            <p><strong>Cat Bookmark</strong> <span class="price-tag">3.49$</span></p>
+            <button class="select-color">add to cart 🛒</button>
+            <select class="select-color">
+                <option>Select Color ↓</option>
+                <option>Black</option><option>White</option><option>Orange</option>
+            </select>
+        </div>
+    </section>
 
-    <!-- Sunglasses Holder -->
-    <div class="product-card" data-product="Sunglasses Holder">
-      <h3>Sunglasses Holder</h3>
-      <img src="sunglasses.jpg" alt="Sunglasses Holder">
-      <select>
-        <option value="">Select Colour</option>
-        <option>Red</option>
-        <option>Blue</option>
-        <option>Green</option>
-        <option>White</option>
-        <option>Black</option>
-        <option>Sparkly Purple</option>
-        <option>Pink</option>
-        <option>Gold</option>
-        <option>Yellow</option>
-        <option>Orange</option>
-        <option>Clear</option>
-      </select>
-      <input type="file" accept=".stl,.obj">
-      <button class="add-to-cart" disabled>Add to Cart</button>
-    </div>
+    <section id="custom" class="custom-section">
+        <div class="upload-container">
+            <div style="font-size: 50px;">↑</div>
+            <h2>drag or drop files</h2>
+            <p>(Supports STL and OBJ)</p>
+        </div>
+        <select class="select-color" style="margin: 20px auto;">
+            <option>Select a colour ↓</option>
+            <option>Red</option><option>Blue</option><option>Green</option>
+            <option>White</option><option>Black</option><option>Sparkly purple</option>
+            <option>Pink</option><option>Gold</option><option>Yellow</option>
+            <option>Orange</option><option>Clear</option>
+        </select>
+        <input type="text" class="text-input" placeholder="do you want anything done to it optional type here">
+    </section>
 
-    <!-- Phone Stand -->
-    <div class="product-card" data-product="Phone Stand">
-      <h3>Phone Stand</h3>
-      <img src="phone-stand2.jpg" alt="Phone Stand">
-      <select>
-        <option value="">Select Colour</option>
-        <option>Red</option>
-        <option>Blue</option>
-        <option>Green</option>
-        <option>White</option>
-        <option>Black</option>
-        <option>Sparkly Purple</option>
-        <option>Pink</option>
-        <option>Gold</option>
-        <option>Yellow</option>
-        <option>Orange</option>
-        <option>Clear</option>
-      </select>
-      <input type="file" accept=".stl,.obj">
-      <button class="add-to-cart" disabled>Add to Cart</button>
-    </div>
-  </div>
-</section>
-
-<!-- Cart -->
-<div id="cart">
-  <h2>Cart</h2>
-  <div id="cart-items"></div>
-  <button class="checkout-btn">Proceed to Checkout</button>
-</div>
-
-<section class="contact" id="contact">
-  <h2>Contact Me</h2>
-  <p>Email: <a href="mailto:quinntessential3d@gmail.com">quinntessential3d@gmail.com</a></p>
-</section>
-
-<script>
-  const cart = [];
-  const cartItemsDiv = document.getElementById("cart-items");
-
-  document.querySelectorAll(".product-card").forEach(card => {
-    const addButton = card.querySelector(".add-to-cart");
-    const colourSelect = card.querySelector("select");
-    const fileInput = card.querySelector("input[type='file']");
-    
-    if(colourSelect){
-      // Enable button when colour selected
-      colourSelect.addEventListener("change", () => {
-        addButton.disabled = colourSelect.value === "";
-      });
-    }
-
-    addButton.addEventListener("click", () => {
-      if(colourSelect && colourSelect.value === ""){
-        addButton.classList.add("wiggle");
-        setTimeout(() => addButton.classList.remove("wiggle"), 300);
-        return;
-      }
-      
-      const productName = card.dataset.product;
-      const colour = colourSelect ? colourSelect.value : "Fixed Colour";
-      const file = fileInput.files[0] ? fileInput.files[0].name : "No file";
-
-      cart.push({ productName, colour, file });
-      updateCart();
-      fileInput.value = "";
-      if(colourSelect) colourSelect.value = "";
-      if(colourSelect) addButton.disabled = true;
-    });
-  });
-
-  function updateCart(){
-    cartItemsDiv.innerHTML = "";
-    cart.forEach((item, index) => {
-      const div = document.createElement("div");
-      div.className = "cart-item";
-      div.innerHTML = `
-        <span>${item.productName} (${item.colour})</span>
-        <button onclick="removeFromCart(${index})">X</button>
-      `;
-      cartItemsDiv.appendChild(div);
-    });
-  }
-
-  function removeFromCart(index){
-    cart.splice(index,1);
-    updateCart();
-  }
-
-  document.querySelector(".checkout-btn").addEventListener("click", () => {
-    alert("Checkout and payment integration will be added later!");
-  });
-</script>
+    <footer>
+        <h2>Contact Me</h2>
+        <a href="mailto:quinntessential3d@gmail.com" class="pill-button">quinntessential3d@gmail.com</a>
+    </footer>
 
 </body>
 </html>
