@@ -21,10 +21,8 @@
             background-color: var(--bg-orange);
             color: var(--white);
             text-align: center;
-            overflow-x: hidden;
         }
 
-        /* Sticky Header */
         header {
             background-color: var(--header-blue);
             padding: 10px 5%;
@@ -39,74 +37,54 @@
 
         .header-left { display: flex; align-items: center; gap: 15px; }
         .logo-img { height: 50px; border-radius: 5px; }
-        .site-name { font-weight: bold; font-size: 1.5rem; color: white; }
+        nav a { color: white; text-decoration: none; margin: 0 10px; font-weight: bold; }
 
-        nav a { color: white; text-decoration: none; margin: 0 10px; font-size: 0.9rem; cursor: pointer; }
+        /* Small Bubble Cart */
+        #side-cart {
+            position: fixed; right: 20px; top: 80px; width: 25%; min-width: 250px;
+            height: 70vh; background-color: var(--header-blue);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            border-radius: 30px; transition: 0.3s; z-index: 2000;
+            padding: 20px; display: none; flex-direction: column; text-align: left;
+        }
+
+        /* Modal for Address Info */
+        #checkout-modal {
+            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 90%; max-width: 400px; background-color: var(--button-blue);
+            border-radius: 30px; padding: 30px; z-index: 3000; display: none;
+            box-shadow: 0 0 50px rgba(0,0,0,0.5);
+        }
+
+        .modal-input {
+            width: 100%; padding: 12px; margin: 8px 0; border-radius: 20px;
+            border: 2px solid white; background: var(--button-blue); color: white;
+            font-family: 'Fredoka'; box-sizing: border-box;
+        }
+
+        .modal-input::placeholder { color: rgba(255,255,255,0.7); }
 
         /* Sections */
-        .hero { padding: 50px 20px; display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 30px; }
-        .hero-text h1 { color: var(--accent-yellow); font-size: 4rem; margin: 0; line-height: 0.9; }
+        .hero { padding: 40px; display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 30px; }
+        .hero h1 { color: var(--accent-yellow); font-size: 4rem; line-height: 0.9; }
+        .about-box { background-color: var(--button-blue); margin: 20px auto; padding: 30px; width: 85%; border-radius: 30px; text-align: left; }
 
-        .pill-button {
-            background-color: var(--button-blue);
-            color: white;
-            padding: 10px 25px;
-            border-radius: 50px;
-            display: inline-block;
-            margin: 5px;
-            text-decoration: none;
-            font-weight: bold;
-            border: none;
-            cursor: pointer;
-        }
-
-        .about-box { background-color: var(--button-blue); margin: 20px auto; padding: 30px; width: 80%; border-radius: 20px; text-align: left; }
-        
-        /* Grid Layout matching Canva */
-        .shop-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; padding: 40px; }
-        .product-card { text-align: left; position: relative; }
+        .shop-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; padding: 40px; }
+        .product-card { text-align: left; background: none; }
         .product-card img { width: 100%; border-radius: 30px; background-color: #eee; aspect-ratio: 1/1; object-fit: cover; }
 
-        .select-color {
-            background-color: var(--button-blue);
-            border: none;
-            color: white;
-            padding: 10px 20px;
-            border-radius: 50px;
-            cursor: pointer;
-            margin-top: 5px;
-            font-family: 'Fredoka', sans-serif;
-            font-weight: bold;
+        .pill-button, .select-color {
+            background-color: var(--button-blue); color: white; padding: 10px 20px;
+            border-radius: 50px; border: none; font-weight: bold; cursor: pointer;
+            margin-top: 5px; font-family: 'Fredoka'; display: inline-block;
         }
-
-        /* Side Cart */
-        #side-cart {
-            position: fixed; right: -350px; top: 0; width: 300px; height: 100%;
-            background-color: var(--header-blue); box-shadow: -5px 0 15px rgba(0,0,0,0.3);
-            transition: 0.3s; z-index: 2000; padding: 20px; display: flex; flex-direction: column; text-align: left;
-        }
-        #side-cart.open { right: 0; }
-        .cart-item { border-bottom: 1px solid var(--button-blue); padding: 15px 0; }
 
         /* Wiggle */
         @keyframes wiggle { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
         .error-wiggle { animation: wiggle 0.3s ease-in-out; border: 2px solid white !important; }
 
-        /* Custom Order Section */
-        .custom-section { padding: 60px 20px; }
-        .upload-area { 
-            background-color: var(--button-blue); border: 4px dashed white; 
-            border-radius: 30px; padding: 40px; max-width: 600px; margin: 0 auto; 
-            cursor: pointer; position: relative;
-        }
-        .upload-area input[type="file"] { position: absolute; width: 100%; height: 100%; top: 0; left: 0; opacity: 0; cursor: pointer; }
-        .text-input { 
-            background-color: var(--button-blue); border: 2px solid white; 
-            border-radius: 50px; padding: 15px; width: 80%; color: white; 
-            margin: 20px 0; font-family: 'Fredoka', sans-serif;
-        }
-
-        footer { padding: 40px; }
+        /* Custom Upload Area */
+        .upload-area { border: 4px dashed white; background: var(--button-blue); border-radius: 30px; padding: 40px; margin: 20px auto; max-width: 500px; }
     </style>
 </head>
 <body>
@@ -114,134 +92,130 @@
     <header>
         <div class="header-left">
             <img src="IMG_0598.jpeg" alt="Logo" class="logo-img">
-            <div class="site-name">Quinntessential 3D</div>
+            <div style="font-size: 1.5rem; font-weight: bold;">Quinntessential 3D</div>
         </div>
         <nav>
-            <a href="#">Home</a> | <a href="#shop">Shop</a> | <a href="#custom">Custom Orders</a> | <a href="#about">About</a> | <a href="#contact">Contact</a>
+            <a href="#">Home</a> | <a href="#shop">Shop</a> | <a href="#custom">Custom</a> | <a href="#about">About</a>
         </nav>
         <div onclick="toggleCart()" style="font-size: 1.5rem; cursor: pointer;">🛒 <span id="cart-count">0</span></div>
     </header>
 
     <div id="side-cart">
-        <span onclick="toggleCart()" style="cursor:pointer; float:right; font-size:2rem;">×</span>
-        <h2>Your Cart</h2>
-        <div id="cart-items-list" style="flex-grow: 1; overflow-y: auto;"></div>
-        <button class="pill-button" onclick="checkout()" style="width: 100%;">Proceed to Checkout</button>
+        <span onclick="toggleCart()" style="cursor:pointer; float:right; font-size:1.5rem;">×</span>
+        <h3 style="margin-top:0">Your Cart</h3>
+        <div id="cart-items-list" style="flex-grow: 1; overflow-y: auto; font-size: 0.9rem;"></div>
+        <button class="pill-button" onclick="openCheckout()" style="width: 100%; background: var(--accent-yellow); color: #333;">Proceed to Checkout</button>
+    </div>
+
+    <div id="checkout-modal">
+        <h2 style="margin-top:0">Delivery Info</h2>
+        <input type="text" id="cust-address" class="modal-input" placeholder="Street Address">
+        <input type="text" id="cust-postal" class="modal-input" placeholder="Postal Code">
+        <input type="text" id="cust-city" class="modal-input" placeholder="City">
+        <input type="tel" id="cust-phone" class="modal-input" placeholder="Phone Number">
+        <input type="email" id="cust-email" class="modal-input" placeholder="Your Email">
+        <button class="pill-button" onclick="sendOrderEmail()" style="width: 100%; background: var(--accent-yellow); color: #333; margin-top: 15px;">Place Order</button>
+        <button class="pill-button" onclick="closeCheckout()" style="width: 100%; background: none; border: 1px solid white;">Cancel</button>
     </div>
 
     <section class="hero">
         <div class="hero-text">
             <h1>PRINT IT<br>LOVE IT</h1>
             <a href="#shop" class="pill-button">Shop Now</a>
-            <a href="#about" class="pill-button">About Us</a><br>
             <a href="#custom" class="pill-button">Custom Orders</a>
         </div>
-        <div class="hero-image">
-            <div style="width:300px; height:300px; border-radius: 30px; background: var(--accent-yellow); display: flex; align-items: center; justify-content: center;">[Main Image]</div>
-        </div>
+        <div style="width:300px; height:300px; background:var(--accent-yellow); border-radius:30px;"></div>
+    </section>
+
+    <section id="about" class="about-box">
+        <h2>About Me</h2>
+        <p>Hi, I'm Quinn! I'm a 12-year-old boy who loves turning ideas into real things with my 3D printer.</p>
     </section>
 
     <section id="shop" class="shop-grid">
-        <div class="product-card" id="item-phone">
-            <div style="height:250px; background:#ddd; border-radius:30px;"></div>
-            <p><strong>phone stand</strong> 11.99$</p>
-            <button class="select-color" onclick="addItem('Phone Stand', 'item-phone', '11.99$')">add to cart 🛒</button>
-            <select class="select-color color-dropdown">
-                <option value="">select colour ↓</option>
-                <option>Red</option><option>Blue</option><option>Green</option><option>White</option><option>Black</option><option>Sparkly purple</option><option>Pink</option><option>gold</option><option>Yellow</option><option>Orange</option><option>Clear</option>
-            </select>
+        <div class="product-card" id="p1">
+            <div style="height:180px; background:#ccc; border-radius:30px;"></div>
+            <p><strong>Glasses Holder</strong> 4.99$</p>
+            <select class="select-color color-dropdown"><option value="">select colour ↓</option><option>Red</option><option>Blue</option><option>Green</option><option>White</option><option>Black</option><option>Sparkly purple</option><option>Pink</option><option>gold</option><option>Yellow</option><option>Orange</option><option>Clear</option></select>
+            <button class="pill-button" onclick="addItem('Glasses Holder', 'p1', '4.99$')">add to cart 🛒</button>
+        </div>
+
+        <div class="product-card" id="p2">
+            <div style="height:180px; background:#ccc; border-radius:30px;"></div>
+            <p><strong>Phone Stand</strong> 11.99$</p>
+            <select class="select-color color-dropdown"><option value="">select colour ↓</option><option>Red</option><option>Blue</option><option>Green</option><option>White</option><option>Black</option><option>Sparkly purple</option><option>Pink</option><option>gold</option><option>Yellow</option><option>Orange</option><option>Clear</option></select>
+            <button class="pill-button" onclick="addItem('Phone Stand', 'p2', '11.99$')">add to cart 🛒</button>
         </div>
 
         <div class="product-card">
-            <div style="height:250px; background:#ddd; border-radius:30px;"></div>
-            <p><strong>SpongeBob doodle pencil holder</strong> 8.99$</p>
-            <button class="select-color" onclick="addItem('SpongeBob Pencil Holder', null, '8.99$')">add to cart 🛒</button>
+            <div style="height:180px; background:#ccc; border-radius:30px;"></div>
+            <p><strong>SpongeBob Holder</strong> 8.99$</p>
+            <button class="pill-button" onclick="addItem('SpongeBob Holder', null, '8.99$')">add to cart 🛒</button>
+        </div>
+        
+        <div class="product-card" id="p4">
+            <div style="height:180px; background:#ccc; border-radius:30px;"></div>
+            <p><strong>Dinosaur Holder</strong> 10.99$</p>
+            <select class="select-color color-dropdown"><option value="">select colour ↓</option><option>Green</option><option>Orange</option><option>Black</option></select>
+            <button class="pill-button" onclick="addItem('Dinosaur Holder', 'p4', '10.99$')">add to cart 🛒</button>
         </div>
     </section>
 
-    <section id="custom" class="custom-section">
-        <div class="upload-area">
-            <input type="file" id="stl-upload" accept=".stl,.obj" onchange="handleFile(this)">
-            <div style="font-size: 50px;">↑</div>
-            <h2 id="file-label">drag or drop files</h2>
-            <p>(Supports STL and OBJ)</p>
+    <section id="custom" class="upload-area">
+        <input type="file" id="fileIn" style="display:none" onchange="document.getElementById('file-msg').innerText=this.files[0].name">
+        <div onclick="document.getElementById('fileIn').click()" style="cursor:pointer">
+            <div style="font-size:40px">↑</div>
+            <h2 id="file-msg">drag or drop files</h2>
         </div>
-        
-        <select class="select-color" id="custom-color" style="margin: 20px auto; display: block;">
-            <option value="">Select a colour ↓</option>
-            <option>Red</option><option>Blue</option><option>Green</option><option>White</option><option>Black</option><option>Sparkly purple</option><option>Pink</option><option>gold</option><option>Yellow</option><option>Orange</option><option>Clear</option>
-        </select>
-        
-        <input type="text" id="custom-note" class="text-input" placeholder="do you want anything done to it optional type here">
-        <br>
-        <button class="pill-button" onclick="addCustomToCart()">Add Custom Order to Cart 🛒</button>
+        <select class="select-color" id="c-color"><option value="">Select a colour ↓</option><option>Red</option><option>Blue</option><option>Green</option><option>White</option><option>Black</option><option>Sparkly purple</option><option>Pink</option><option>gold</option><option>Yellow</option><option>Orange</option><option>Clear</option></select>
+        <input type="text" id="c-note" class="modal-input" placeholder="special requests? (optional)">
+        <button class="pill-button" onclick="addCustom()">Add Custom to Cart 🛒</button>
     </section>
-
-    <footer id="contact">
-        <h2>Contact Me</h2>
-        <a href="mailto:quinntessential3d@gmail.com" class="pill-button">quinntessential3d@gmail.com</a>
-    </footer>
 
     <script>
         let cart = [];
-
-        function toggleCart() { document.getElementById('side-cart').classList.toggle('open'); }
-
-        function handleFile(input) {
-            const fileName = input.files[0] ? input.files[0].name : "drag or drop files";
-            document.getElementById('file-label').innerText = fileName;
+        function toggleCart() { 
+            let sc = document.getElementById('side-cart');
+            sc.style.display = (sc.style.display === 'flex') ? 'none' : 'flex';
         }
 
-        function addItem(name, elementId, price) {
-            let color = "Fixed Color";
-            if (elementId) {
-                const dropdown = document.getElementById(elementId).querySelector('.color-dropdown');
-                if (!dropdown.value) {
-                    dropdown.classList.add('error-wiggle');
-                    setTimeout(() => dropdown.classList.remove('error-wiggle'), 300);
-                    return;
-                }
-                color = dropdown.value;
+        function addItem(name, id, price) {
+            let color = "Fixed";
+            if(id) {
+                let d = document.getElementById(id).querySelector('.color-dropdown');
+                if(!d.value) { d.classList.add('error-wiggle'); setTimeout(()=>d.classList.remove('error-wiggle'),300); return; }
+                color = d.value;
             }
-            cart.push({ name, color, price });
+            cart.push({name, color, price});
             updateCart();
-            toggleCart();
         }
 
-        function addCustomToCart() {
-            const file = document.getElementById('stl-upload').files[0];
-            const color = document.getElementById('custom-color').value;
-            const note = document.getElementById('custom-note').value;
-
-            if (!file || !color) {
-                alert("Please upload a file and select a color first!");
-                return;
-            }
-            cart.push({ name: `Custom: ${file.name}`, color: color, price: "Quoted later", note: note });
+        function addCustom() {
+            let f = document.getElementById('fileIn').files[0];
+            let c = document.getElementById('c-color').value;
+            if(!f || !c) return alert("Upload file and pick color!");
+            cart.push({name: "Custom: "+f.name, color: c, price: "TBD", note: document.getElementById('c-note').value});
             updateCart();
-            toggleCart();
         }
 
         function updateCart() {
-            const list = document.getElementById('cart-items-list');
             document.getElementById('cart-count').innerText = cart.length;
-            list.innerHTML = cart.map(item => `
-                <div class="cart-item">
-                    <strong>${item.name}</strong><br>
-                    Color: ${item.color} | Price: ${item.price}
-                    ${item.note ? `<br><small>Note: ${item.note}</small>` : ''}
-                </div>
-            `).join('');
+            document.getElementById('cart-items-list').innerHTML = cart.map(i => `<div style="padding:10px 0; border-bottom:1px solid #00A8FF"><b>${i.name}</b><br>${i.color} - ${i.price}</div>`).join('');
+            document.getElementById('side-cart').style.display = 'flex';
         }
 
-        function checkout() {
-            if (cart.length === 0) return alert("Cart is empty!");
-            let body = "New Order from Quinntessential 3D:\n\n";
-            cart.forEach(item => {
-                body += `- ${item.name} (${item.color}) - ${item.price}\n`;
-                if(item.note) body += `  Note: ${item.note}\n`;
-            });
-            window.location.href = `mailto:quinntessential3d@gmail.com?subject=New 3D Print Order&body=${encodeURIComponent(body)}`;
+        function openCheckout() { 
+            if(cart.length === 0) return;
+            document.getElementById('checkout-modal').style.display = 'block'; 
+        }
+        function closeCheckout() { document.getElementById('checkout-modal').style.display = 'none'; }
+
+        function sendOrderEmail() {
+            let addr = document.getElementById('cust-address').value;
+            if(!addr) return alert("Please fill out address!");
+            let body = "New Order Details:\n\nItems:\n" + cart.map(i => `- ${i.name} (${i.color})`).join('\n');
+            body += `\n\nShipping to:\n${addr}\n${document.getElementById('cust-city').value}\n${document.getElementById('cust-postal').value}\nPhone: ${document.getElementById('cust-phone').value}`;
+            window.location.href = `mailto:quinntessential3d@gmail.com?subject=Order Request&body=${encodeURIComponent(body)}`;
         }
     </script>
 </body>
