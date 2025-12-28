@@ -1,660 +1,195 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quinntessential 3D</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&display=swap" rel="stylesheet">
-    
-    <style>
-        /* --- CSS Variables & Reset --- */
-        :root {
-            --color-orange-bg: #dd7b3e; /* Main background orange */
-            --color-blue-dark: #2c3e50; /* Header blue */
-            --color-blue-bright: #4da6ff; /* Buttons and containers */
-            --color-yellow-accent: #f1c40f; /* Hero image background */
-            --color-white: #ffffff;
-            --color-text-dark: #333333;
-            --font-main: 'Montserrat', sans-serif;
-            --header-height: 70px;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quinntessential 3D</title>
+<style>
+  /* COLORS */
+  :root {
+    --background: #F37431;
+    --header: #1A3D7C;
+    --header-line: #155A8D;
+    --box-button: #00A8FF;
+    --file-upload: #FFD966;
+  }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+  body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: var(--background);
+    color: #fff;
+  }
 
-        body {
-            font-family: var(--font-main);
-            background-color: var(--color-orange-bg);
-            color: var(--color-white);
-            padding-top: var(--header-height); /* Prevent content getting stuck under header */
-        }
+  /* STICKY HEADER */
+  header {
+    position: sticky;
+    top: 0;
+    background-color: var(--header);
+    padding: 20px;
+    z-index: 1000;
+    border-bottom: 5px solid var(--header-line);
+  }
 
-        a { text-decoration: none; color: inherit; }
-        ul { list-style: none; }
-        img { max-width: 100%; display: block; }
+  header h1 {
+    margin: 0;
+  }
 
-        /* --- Utility Classes --- */
-        .container {
-            width: 90%;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
+  /* PRODUCT CARDS */
+  .products {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 20px;
+  }
 
-        .section-title {
-            font-size: 2.5rem;
-            font-weight: 800;
-            margin-bottom: 20px;
-            color: var(--color-yellow-accent);
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
-        }
+  .product-card {
+    background-color: var(--box-button);
+    color: #000;
+    padding: 20px;
+    margin: 10px;
+    border-radius: 10px;
+    width: 250px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
 
-        .btn {
-            display: inline-block;
-            padding: 12px 24px;
-            background-color: var(--color-blue-bright);
-            color: var(--color-white);
-            font-weight: 600;
-            border-radius: 30px;
-            border: none;
-            cursor: pointer;
-            transition: background-color 0.2s;
-            margin-right: 10px;
-            margin-bottom: 10px;
-        }
+  .product-card input, .product-card select, .product-card button {
+    padding: 8px;
+    border-radius: 5px;
+    border: none;
+  }
 
-        .btn:hover { background-color: #3d8fd1; }
+  .product-card button {
+    background-color: var(--box-button);
+    color: #fff;
+    cursor: pointer;
+    font-weight: bold;
+  }
 
-        /* --- HEADER (Sticky) --- */
-        header {
-            background-color: var(--color-blue-dark);
-            color: var(--color-white);
-            padding: 0 5%;
-            height: var(--header-height);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            z-index: 1000;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-        }
+  /* CART */
+  #cart {
+    padding: 20px;
+    background-color: #222;
+  }
 
-        .logo {
-            font-weight: 800;
-            font-size: 1.5rem;
-            display: flex;
-            align-items: center;
-        }
+  #cart h2 {
+    margin-top: 0;
+  }
 
-        .logo img { height: 30px; margin-right: 10px; }
+  .cart-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    padding: 10px;
+    background-color: #333;
+    border-radius: 5px;
+  }
 
-        nav ul { display: flex; }
-        nav ul li { margin-left: 25px; font-weight: 600; font-size: 0.9rem;}
-        nav ul li a:hover { color: var(--color-blue-bright); }
+  .checkout-button {
+    background-color: var(--box-button);
+    color: #fff;
+    padding: 10px 20px;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+    margin-top: 10px;
+  }
 
-        .cart-icon-wrap {
-            cursor: pointer;
-            position: relative;
-            margin-left: 25px;
-        }
-        .cart-count {
-            position: absolute;
-            top: -8px;
-            right: -10px;
-            background-color: var(--color-yellow-accent);
-            color: var(--color-blue-dark);
-            font-size: 0.7rem;
-            font-weight: bold;
-            border-radius: 50%;
-            width: 18px;
-            height: 18px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        /* --- HERO SECTION --- */
-        #hero {
-            padding: 50px 0;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-wrap: wrap;
-        }
-
-        .hero-text { flex: 1 1 400px; }
-        .hero-text h1 {
-            font-size: 5rem;
-            line-height: 0.9;
-            font-weight: 800;
-            color: var(--color-white);
-            margin-bottom: 30px;
-        }
-        .hero-text h1 span { color: var(--color-yellow-accent); }
-
-        .hero-image-container {
-            flex: 1 1 400px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .hero-image-bg {
-            background-color: var(--color-yellow-accent);
-            padding: 40px;
-            border-radius: 30px;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-        }
-        .hero-image-bg img { max-width: 300px; transform: rotate(-10deg); }
-
-
-        /* --- ABOUT ME --- */
-        #about { padding: 40px 0; }
-        .about-box {
-            background-color: var(--color-blue-bright);
-            padding: 40px;
-            border-radius: 20px;
-        }
-        .about-box h3 { font-size: 1.8rem; margin-bottom: 15px; }
-        .about-box p { font-size: 1.1rem; line-height: 1.6; margin-bottom: 20px; }
-
-
-        /* --- SHOP SECTION --- */
-        #shop { padding: 40px 0; }
-        .shop-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 30px;
-        }
-
-        .product-card {
-            background-color: var(--color-blue-bright);
-            border-radius: 20px;
-            overflow: hidden;
-            padding-bottom: 20px;
-            text-align: center;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            display: flex;
-            flex-direction: column;
-        }
-
-        .product-image-wrap {
-            background-color: var(--color-white); /* White bg for product images per design */
-            padding: 20px;
-            height: 220px; /* Fixed height for consistency */
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .product-image-wrap img { max-height: 100%; object-fit: contain; }
-
-        .product-info { padding: 20px; flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between;}
-        .product-title { font-size: 1.2rem; font-weight: 800; margin-bottom: 10px; }
-        .product-price { font-size: 1.3rem; font-weight: 800; margin-bottom: 15px; display: block; }
-        .add-to-cart-btn {
-            background-color: var(--color-blue-dark);
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 20px;
-            font-weight: bold;
-            cursor: pointer;
-            width: 100%;
-        }
-        .add-to-cart-btn:hover { background-color: #1a252f; }
-
-
-        /* --- CUSTOM ORDERS SECTION (Drag & Drop) --- */
-        #custom-orders { padding: 60px 0; }
-        .custom-flex-container {
-            display: flex;
-            gap: 40px;
-            flex-wrap: wrap;
-        }
-
-        /* Drop Zone Area */
-        .drop-zone-container {
-            flex: 2 1 400px;
-            background-color: var(--color-blue-bright);
-            border-radius: 25px;
-            padding: 20px;
-        }
-        
-        .drop-zone {
-            border: 3px solid rgba(255,255,255,0.5);
-            border-radius: 20px;
-            height: 300px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            cursor: pointer;
-            transition: background-color 0.3s, border-color 0.3s;
-        }
-
-        .drop-zone.dragover {
-            background-color: rgba(255,255,255,0.1);
-            border-color: var(--color-white);
-        }
-
-        .drop-zone-icon { font-size: 4rem; margin-bottom: 10px; }
-        .drop-zone-text { font-size: 2.5rem; font-weight: 800; }
-        .drop-zone-subtext { margin-top: 10px; font-size: 1rem; opacity: 0.8; }
-        #file-input { display: none; }
-
-        /* Color Selector Area */
-        .color-selector-container {
-            flex: 1 1 250px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-        .color-selector-label {
-            font-size: 2rem;
-            font-weight: 800;
-            margin-bottom: 20px;
-            text-align: center;
-        }
-        .color-dropdown-mockup {
-            background-color: var(--color-blue-bright);
-            border-radius: 30px;
-            height: 60px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 10px 0 20px;
-            cursor: not-allowed; /* Mockup only */
-        }
-        .color-preview {
-            width: 100px;
-            height: 40px;
-            background-color: var(--color-yellow-accent);
-            border-radius: 20px;
-        }
-        .dropdown-arrow { font-size: 2rem; margin-right: 10px; }
-        
-
-        /* --- CONTACT --- */
-        #contact { padding: 40px 0 80px; }
-        .contact-btn {
-            background-color: var(--color-blue-bright);
-            color: var(--color-white);
-            padding: 10px 20px;
-            border-radius: 20px;
-            font-weight: bold;
-            display: inline-block;
-        }
-
-        /* --- SHOPPING CART SIDEBAR --- */
-        .cart-sidebar {
-            position: fixed;
-            top: var(--header-height);
-            right: -400px; /* Hidden initially */
-            width: 350px;
-            height: calc(100vh - var(--header-height));
-            background-color: var(--color-white);
-            color: var(--color-text-dark);
-            box-shadow: -5px 0 15px rgba(0,0,0,0.1);
-            transition: right 0.3s ease-in-out;
-            z-index: 999;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .cart-sidebar.active { right: 0; }
-
-        .cart-header {
-            padding: 20px;
-            background-color: var(--color-blue-dark);
-            color: white;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .close-cart { cursor: pointer; font-size: 1.5rem; }
-
-        .cart-items-container {
-            flex-grow: 1;
-            overflow-y: auto;
-            padding: 20px;
-        }
-
-        .cart-item {
-            display: flex;
-            align-items: center;
-            margin-bottom: 20px;
-            border-bottom: 1px solid #eee;
-            padding-bottom: 10px;
-        }
-        .cart-item img { width: 60px; height: 60px; object-fit: contain; margin-right: 15px; }
-        .cart-item-details h4 { font-size: 0.9rem; margin-bottom: 5px; }
-        .remove-item { color: red; cursor: pointer; font-size: 0.8rem; margin-top: 5px; display: inline-block;}
-
-        .cart-footer {
-            padding: 20px;
-            border-top: 1px solid #eee;
-            background-color: #f9f9f9;
-        }
-        .cart-total {
-            display: flex;
-            justify-content: space-between;
-            font-weight: 800;
-            font-size: 1.2rem;
-            margin-bottom: 20px;
-        }
-        .checkout-btn {
-            width: 100%;
-            text-align: center;
-            background-color: var(--color-orange-bg);
-        }
-
-        /* Responsive adjustments */
-        @media (max-width: 768px) {
-            .hero-text h1 { font-size: 3.5rem; }
-            nav ul { display: none; } /* Hide nav links on mobile for simplicity */
-            .custom-flex-container { flex-direction: column; }
-            .color-selector-container { align-items: center; }
-            .color-dropdown-mockup { width: 100%; max-width: 300px; }
-        }
-    </style>
+  /* FILE UPLOAD */
+  input[type="file"] {
+    background-color: var(--file-upload);
+  }
+</style>
 </head>
 <body>
 
-    <header>
-        <div class="logo">
-            <img src="https://placehold.co/30x30/dd7b3e/ffffff?text=Q" alt="Logo">
-            Quinntessential 3D
-        </div>
-        <nav>
-            <ul>
-                <li><a href="#hero">Home</a></li>
-                <li><a href="#shop">Shop</a></li>
-                <li><a href="#custom-orders">Custom Orders</a></li>
-                <li><a href="#about">About</a></li>
-                <li><a href="#contact">Contact</a></li>
-            </ul>
-        </nav>
-        <div class="cart-icon-wrap" onclick="toggleCart()">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
-            <div class="cart-count" id="cart-count">0</div>
-        </div>
-    </header>
+<header>
+  <h1>Quinntessential 3D</h1>
+</header>
 
-    <div class="cart-sidebar" id="cart-sidebar">
-        <div class="cart-header">
-            <h3>Your Cart</h3>
-            <span class="close-cart" onclick="toggleCart()">&times;</span>
-        </div>
-        <div class="cart-items-container" id="cart-items">
-            <p style="text-align: center; margin-top: 20px; color: #666;">Your cart is empty.</p>
-        </div>
-        <div class="cart-footer">
-            <div class="cart-total">
-                <span>Total:</span>
-                <span id="cart-total-price">$0.00</span>
-            </div>
-            <button class="btn checkout-btn">Checkout (Demo)</button>
-        </div>
-    </div>
+<section class="products">
+  <div class="product-card">
+    <h3>Custom 3D Print</h3>
+    <label>Upload STL/OBJ/Other:</label>
+    <input type="file" accept=".stl,.obj,.fbx,.3mf" class="file-upload" required>
+    <label>Select Filament Color:</label>
+    <select class="color-select" required>
+      <option value="">Choose color</option>
+      <option value="green">Green</option>
+      <option value="grey">Grey</option>
+      <option value="black">Black</option>
+    </select>
+    <button class="add-to-cart">Add to Cart</button>
+  </div>
+</section>
 
+<section id="cart">
+  <h2>Your Cart</h2>
+  <div id="cart-items"></div>
+  <button class="checkout-button" id="checkout-button">Proceed to Checkout</button>
+</section>
 
-    <main class="container">
+<script src="https://js.stripe.com/v3/"></script>
+<script>
+  const cart = [];
+  const cartItemsDiv = document.getElementById('cart-items');
 
-        <section id="hero">
-            <div class="hero-text">
-                <h1>PRINT IT<br><span>LOVE IT</span></h1>
-                <a href="#shop" class="btn">Shop Now</a>
-                <a href="#about" class="btn">About Us</a>
-                <a href="#custom-orders" class="btn" style="display:block; width: fit-content;">Custom Orders</a>
-            </div>
-            <div class="hero-image-container">
-                <div class="hero-image-bg">
-                    <img src="https://placehold.co/300x300/2c3e50/ffffff?text=Phone+Stand+Model" alt="3D Printed Phone Stand">
-                </div>
-            </div>
-        </section>
+  function renderCart() {
+    cartItemsDiv.innerHTML = '';
+    cart.forEach((item, index) => {
+      const div = document.createElement('div');
+      div.className = 'cart-item';
+      div.innerHTML = `
+        <span>${item.name} - ${item.color} - ${item.fileName}</span>
+        <button onclick="removeItem(${index})">Remove</button>
+      `;
+      cartItemsDiv.appendChild(div);
+    });
+  }
 
-        <section id="about">
-            <h2 class="section-title">About Me</h2>
-            <div class="about-box">
-                <h3>Hi, I'm Quinn!</h3>
-                <p>I'm a 12-year-old boy who loves turning ideas into real things with my 3D printer.</p>
-                <h3>What I Make</h3>
-                <p>I make all kinds of stuff, from custom gadgets to fidgets, and I'm always trying out new designs.</p>
-                <h3>How It Started</h3>
-                <p>What started as a fun hobby has turned into a small business, and I can't wait to see what I create next!</p>
-            </div>
-        </section>
+  function removeItem(index) {
+    cart.splice(index, 1);
+    renderCart();
+  }
 
-        <section id="shop">
-            <h2 class="section-title">Shop</h2>
-            <div class="shop-grid">
-                <div class="product-card">
-                    <div class="product-image-wrap">
-                        <img src="https://placehold.co/250x200/eee/333?text=Visor+Clip" alt="Glasses holder">
-                    </div>
-                    <div class="product-info">
-                        <h3 class="product-title">Glasses holder for car visor</h3>
-                        <span class="product-price">$4.99</span>
-                        <button class="add-to-cart-btn" data-id="1" data-title="Glasses holder" data-price="4.99" data-img="https://placehold.co/60x60/eee/333?text=Clip">Add to Cart</button>
-                    </div>
-                </div>
+  document.querySelectorAll('.add-to-cart').forEach((btn, i) => {
+    btn.addEventListener('click', () => {
+      const card = btn.closest('.product-card');
+      const fileInput = card.querySelector('.file-upload');
+      const colorSelect = card.querySelector('.color-select');
+      
+      if (!fileInput.files[0] || !colorSelect.value) {
+        alert('Please upload a file and select a color!');
+        return;
+      }
 
-                <div class="product-card">
-                    <div class="product-image-wrap">
-                        <img src="https://placehold.co/250x200/eee/333?text=Phone+Stand" alt="Phone stand">
-                    </div>
-                    <div class="product-info">
-                        <h3 class="product-title">Phone stand</h3>
-                        <span class="product-price">$11.99</span>
-                        <button class="add-to-cart-btn" data-id="2" data-title="Phone stand" data-price="11.99" data-img="https://placehold.co/60x60/eee/333?text=Stand">Add to Cart</button>
-                    </div>
-                </div>
+      cart.push({
+        name: card.querySelector('h3').innerText,
+        color: colorSelect.value,
+        fileName: fileInput.files[0].name,
+      });
+      renderCart();
+    });
+  });
 
-                 <div class="product-card">
-                    <div class="product-image-wrap">
-                        <img src="https://placehold.co/250x200/eee/333?text=SpongeBob" alt="SpongeBob holder">
-                    </div>
-                    <div class="product-info">
-                        <h3 class="product-title">SpongeBob doodle pencil holder</h3>
-                        <span class="product-price">$8.99</span>
-                        <button class="add-to-cart-btn" data-id="3" data-title="SpongeBob Holder" data-price="8.99" data-img="https://placehold.co/60x60/eee/333?text=Bob">Add to Cart</button>
-                    </div>
-                </div>
+  // STRIPE CHECKOUT
+  const stripe = Stripe('YOUR_PUBLISHABLE_KEY');
 
-                <div class="product-card">
-                    <div class="product-image-wrap">
-                        <img src="https://placehold.co/250x200/eee/333?text=Dino+Holder" alt="Dinosaur pencil holder">
-                    </div>
-                    <div class="product-info">
-                        <h3 class="product-title">Dinosaur pencil holder</h3>
-                        <span class="product-price">$10.99</span>
-                        <button class="add-to-cart-btn" data-id="4" data-title="Dino Holder" data-price="10.99" data-img="https://placehold.co/60x60/eee/333?text=Dino">Add to Cart</button>
-                    </div>
-                </div>
+  document.getElementById('checkout-button').addEventListener('click', async () => {
+    if(cart.length === 0) { alert('Your cart is empty!'); return; }
 
-                <div class="product-card">
-                    <div class="product-image-wrap">
-                        <img src="https://placehold.co/250x200/eee/333?text=Cat+Bookmark" alt="Cat Bookmark">
-                    </div>
-                    <div class="product-info">
-                        <h3 class="product-title">Cat Bookmark</h3>
-                        <span class="product-price">$3.49</span>
-                        <button class="add-to-cart-btn" data-id="5" data-title="Cat Bookmark" data-price="3.49" data-img="https://placehold.co/60x60/eee/333?text=Cat">Add to Cart</button>
-                    </div>
-                </div>
-            </div>
-        </section>
+    const response = await fetch('/create-checkout-session', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ items: cart.map(item => ({ name: item.name, price: 10, quantity: 1 })) })
+    });
 
-        <section id="custom-orders">
-            <h2 class="section-title" style="text-align: center;">Custom Orders</h2>
-            <div class="custom-flex-container">
-                
-                <div class="drop-zone-container">
-                    <input type="file" id="file-input" accept=".stl">
-                    <div class="drop-zone" id="drop-zone">
-                        <div class="drop-zone-icon">
-                             <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-                        </div>
-                        <div class="drop-zone-text">drag or drop files</div>
-                        <div class="drop-zone-subtext" id="file-message">(Supports .STL files only)</div>
-                    </div>
-                </div>
+    const session = await response.json();
+    stripe.redirectToCheckout({ sessionId: session.id });
+  });
+</script>
 
-                <div class="color-selector-container">
-                    <div class="color-selector-label">Select a colour</div>
-                    <div class="color-dropdown-mockup">
-                        <div class="color-preview"></div>
-                        <div class="dropdown-arrow">↓</div>
-                    </div>
-                </div>
-
-            </div>
-        </section>
-
-        <section id="contact">
-            <h2 class="section-title">Contact Me</h2>
-            <a href="mailto:quinntessential3d@gmail.com" class="contact-btn">quinntessential3d@gmail.com</a>
-        </section>
-
-    </main>
-
-    <script>
-        // --- SHOPPING CART FUNCTIONALITY ---
-
-        let cart = [];
-        const cartSidebar = document.getElementById('cart-sidebar');
-        const cartItemsContainer = document.getElementById('cart-items');
-        const cartCountElement = document.getElementById('cart-count');
-        const cartTotalElement = document.getElementById('cart-total-price');
-
-        // Toggle cart sidebar visibility
-        function toggleCart() {
-            cartSidebar.classList.toggle('active');
-        }
-
-        // Add item to cart
-        function addToCart(id, title, price, img) {
-            // Check if item already exists
-            const existingItem = cart.find(item => item.id === id);
-            if (existingItem) {
-                existingItem.quantity += 1;
-            } else {
-                cart.push({ id, title, price: parseFloat(price), img, quantity: 1 });
-            }
-            updateCartUI();
-            // Open cart to show feedback
-            if (!cartSidebar.classList.contains('active')) {
-                toggleCart();
-            }
-        }
-
-        // Remove item from cart
-        function removeFromCart(id) {
-            cart = cart.filter(item => item.id !== id);
-            updateCartUI();
-        }
-
-        // Update the cart sidebar and counts
-        function updateCartUI() {
-            // Update count badge
-            const totalCount = cart.reduce((sum, item) => sum + item.quantity, 0);
-            cartCountElement.innerText = totalCount;
-
-            // Calculate total price
-            const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-            cartTotalElement.innerText = '$' + totalPrice.toFixed(2);
-
-            // Render cart items
-            if (cart.length === 0) {
-                cartItemsContainer.innerHTML = '<p style="text-align: center; margin-top: 20px; color: #666;">Your cart is empty.</p>';
-            } else {
-                cartItemsContainer.innerHTML = cart.map(item => `
-                    <div class="cart-item">
-                        <img src="${item.img}" alt="${item.title}">
-                        <div class="cart-item-details">
-                            <h4>${item.title}</h4>
-                            <p>$${item.price.toFixed(2)} x ${item.quantity}</p>
-                            <span class="remove-item" onclick="removeFromCart(${item.id})">Remove</span>
-                        </div>
-                    </div>
-                `).join('');
-            }
-        }
-
-        // Attach Event Listeners to "Add to Cart" buttons
-        document.querySelectorAll('.add-to-cart-btn').forEach(button => {
-            button.addEventListener('click', () => {
-                const id = parseInt(button.getAttribute('data-id'));
-                const title = button.getAttribute('data-title');
-                const price = button.getAttribute('data-price');
-                const img = button.getAttribute('data-img');
-                addToCart(id, title, price, img);
-            });
-        });
-
-
-        // --- STL FILE DRAG & DROP FUNCTIONALITY ---
-
-        const dropZone = document.getElementById('drop-zone');
-        const fileInput = document.getElementById('file-input');
-        const fileMessage = document.getElementById('file-message');
-
-        // Trigger hidden file input when clicking drop zone
-        dropZone.addEventListener('click', () => fileInput.click());
-
-        // Handle file selection via dialog
-        fileInput.addEventListener('change', (e) => {
-            handleFiles(e.target.files);
-        });
-
-        // Drag over events (for visual feedback)
-        ['dragenter', 'dragover'].forEach(eventName => {
-            dropZone.addEventListener(eventName, (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                dropZone.classList.add('dragover');
-            }, false);
-        });
-
-        // Drag leave events
-        ['dragleave', 'drop'].forEach(eventName => {
-            dropZone.addEventListener(eventName, (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                dropZone.classList.remove('dragover');
-            }, false);
-        });
-
-        // Handle Drop event
-        dropZone.addEventListener('drop', (e) => {
-            const dt = e.dataTransfer;
-            const files = dt.files;
-            handleFiles(files);
-        });
-
-        // Process the dropped/selected files
-        function handleFiles(files) {
-            if (files.length > 0) {
-                const file = files[0];
-                // Validate file extension for .stl
-                if (file.name.toLowerCase().endsWith('.stl')) {
-                    fileMessage.innerText = `Success! Loaded: ${file.name}`;
-                    fileMessage.style.color = "#00ff00"; // Green for success
-                    console.log("STL File ready for processing:", file.name);
-                    // Here you would typically send 'file' to a server via AJAX/Fetch
-                } else {
-                    fileMessage.innerText = "Error: Only .STL files are supported.";
-                    fileMessage.style.color = "red";
-                }
-            }
-        }
-    </script>
 </body>
 </html>
