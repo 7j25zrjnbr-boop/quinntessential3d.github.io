@@ -80,6 +80,13 @@
         .error-wiggle { animation: wiggle 0.3s ease-in-out; border: 2px solid white !important; }
 
         .upload-area { border: 4px dashed white; background: var(--button-blue); border-radius: 30px; padding: 40px; margin: 20px auto; max-width: 500px; }
+
+        /* Toast notification */
+        #toast {
+            position: fixed; bottom: 20px; right: 20px; background: var(--accent-yellow);
+            color: #333; padding: 15px 20px; border-radius: 20px; font-weight: bold;
+            display: none; z-index: 5000; box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
     </style>
 </head>
 <body>
@@ -172,8 +179,17 @@
     <button class="pill-button" onclick="addCustom()">Add Custom to Cart 🛒</button>
 </section>
 
+<div id="toast"></div>
+
 <script>
 let cart = [];
+
+function showToast(msg){
+    const toast = document.getElementById('toast');
+    toast.innerText = msg;
+    toast.style.display = 'block';
+    setTimeout(()=>{ toast.style.display = 'none'; }, 1500);
+}
 
 function toggleCart() { 
     let sc = document.getElementById('side-cart');
@@ -189,6 +205,7 @@ function addItem(name, id, price) {
     }
     cart.push({name, color, price});
     updateCart();
+    showToast(`${name} added to cart!`);
 }
 
 function addCustom() {
@@ -197,13 +214,13 @@ function addCustom() {
     if(!f || !c) return alert("Upload file and pick color!");
     cart.push({name: "Custom: "+f.name, color: c, price: "TBD", note: document.getElementById('c-note').value});
     updateCart();
+    showToast(`Custom: ${f.name} added to cart!`);
 }
 
 function updateCart() {
     document.getElementById('cart-count').innerText = cart.length;
     document.getElementById('cart-items-list').innerHTML = cart.map(i => `<div style="padding:10px 0; border-bottom:1px solid #00A8FF"><b>${i.name}</b><br>${i.color} - ${i.price}</div>`).join('');
     document.getElementById('order-data').value = cart.map(i => `${i.name} (${i.color})`).join('\n');
-    document.getElementById('side-cart').style.display = 'flex';
 }
 
 function openCheckout() { 
@@ -215,7 +232,6 @@ function closeCheckout() {
     document.getElementById('checkout-modal').style.display = 'none'; 
 }
 
-// Form submission with confirmation
 document.getElementById('checkout-form').addEventListener('submit', function(e){
     if(cart.length === 0){
         e.preventDefault();
