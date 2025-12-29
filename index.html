@@ -63,7 +63,8 @@ nav a { color: white; text-decoration: none; margin: 0 10px; font-weight: bold; 
 .modal-input::placeholder { color: rgba(255,255,255,0.7); }
 
 .hero { padding: 40px; display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 30px; }
-.hero h1 { color: var(--accent-yellow); font-size: 4rem; line-height: 0.9; }
+.hero h1 { color: var(--accent-yellow); font-size: 4rem; line-height: 0.9; margin-bottom: 20px; }
+.hero-buttons a { text-decoration: none; }
 .about-box { background-color: var(--button-blue); margin: 20px auto; padding: 30px; width: 85%; border-radius: 30px; text-align: left; }
 
 .shop-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; padding: 40px; }
@@ -74,7 +75,6 @@ nav a { color: white; text-decoration: none; margin: 0 10px; font-weight: bold; 
     background-color: var(--button-blue); color: white; padding: 10px 20px;
     border-radius: 50px; border: none; font-weight: bold; cursor: pointer;
     margin-top: 5px; font-family: 'Fredoka'; display: inline-block;
-    text-decoration: none;
 }
 
 @keyframes wiggle { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
@@ -165,11 +165,13 @@ nav a { color: white; text-decoration: none; margin: 0 10px; font-weight: bold; 
 <section class="hero">
     <div class="hero-text">
         <h1>PRINT IT<br>LOVE IT</h1>
-        <a href="#shop" class="pill-button">Shop Now</a>
-        <a href="#custom" class="pill-button">Custom Orders</a>
-        <a href="#about" class="pill-button">About Me</a>
+        <div class="hero-buttons">
+            <a href="#shop" class="pill-button">Shop Now</a>
+            <a href="#custom" class="pill-button">Custom Orders</a>
+            <a href="#about" class="pill-button">About Me</a>
+        </div>
     </div>
-    <div style="width:300px; height:300px; border-radius:30px; overflow:hidden;">
+    <div style="width:400px; max-width:90vw; height:400px; border-radius:30px; overflow:hidden;">
         <img src="https://i.postimg.cc/fVzXcsxf/IMG-0627.png" style="width:100%; height:100%; object-fit:cover; border-radius:30px;">
     </div>
 </section>
@@ -187,7 +189,6 @@ nav a { color: white; text-decoration: none; margin: 0 10px; font-weight: bold; 
         <button class="pill-button" onclick="addItem('Glasses Holder', 'p1', '4.99$')">add to cart 🛒</button>
         <div class="corner-badge" id="badge-p1"></div>
     </div>
-
     <div class="product-card" id="p2">
         <div style="height:180px; background:#ccc; border-radius:30px;"></div>
         <p><strong>Phone Stand</strong> 11.99$</p>
@@ -195,13 +196,11 @@ nav a { color: white; text-decoration: none; margin: 0 10px; font-weight: bold; 
         <button class="pill-button" onclick="addItem('Phone Stand', 'p2', '11.99$')">add to cart 🛒</button>
         <div class="corner-badge" id="badge-p2"></div>
     </div>
-
     <div class="product-card" id="p3">
         <div style="height:180px; background:#ccc; border-radius:30px;"></div>
         <p><strong>SpongeBob Holder</strong> 8.99$</p>
         <button class="pill-button" onclick="addItem('SpongeBob Holder', null, '8.99$')">add to cart 🛒</button>
     </div>
-    
     <div class="product-card" id="p4">
         <div style="height:180px; background:#ccc; border-radius:30px;"></div>
         <p><strong>Dinosaur Holder</strong> 10.99$</p>
@@ -290,7 +289,10 @@ function showCartBadge(num){
 function updateCart() {
     document.getElementById('cart-count').innerText = cart.length;
     document.getElementById('cart-items-list').innerHTML = cart.map((i, index) => `<div style="padding:10px 0; border-bottom:1px solid #00A8FF"><b>${i.name}</b> <span style="cursor:pointer; float:right;" onclick="removeItem(${index})">×</span><br>${i.color} - ${i.price}</div>`).join('');
-    document.getElementById('order-data').value = cart.map(i => `${i.name} (${i.color})`).join('\n');
+    document.getElementById('order-data').value = cart.map(i => {
+        let color = i.color || "No color";
+        return `${i.name} (${color})`;
+    }).join(', ');
 }
 
 function removeItem(index){
