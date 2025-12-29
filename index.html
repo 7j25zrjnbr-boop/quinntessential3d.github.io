@@ -64,6 +64,8 @@ nav a { color: white; text-decoration: none; margin: 0 10px; font-weight: bold; 
 
 .hero { padding: 40px; display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 30px; }
 .hero h1 { color: var(--accent-yellow); font-size: 4rem; line-height: 0.9; }
+.hero .pill-button { text-decoration: none; } /* remove underline/lines from buttons */
+
 .about-box { background-color: var(--button-blue); margin: 20px auto; padding: 30px; width: 85%; border-radius: 30px; text-align: left; }
 
 .shop-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; padding: 40px; }
@@ -166,8 +168,11 @@ nav a { color: white; text-decoration: none; margin: 0 10px; font-weight: bold; 
         <h1>PRINT IT<br>LOVE IT</h1>
         <a href="#shop" class="pill-button">Shop Now</a>
         <a href="#custom" class="pill-button">Custom Orders</a>
+        <a href="#about" class="pill-button">About Me</a>
     </div>
-    <div style="width:300px; height:300px; background:var(--accent-yellow); border-radius:30px;"></div>
+    <div style="width:300px; height:300px; border-radius:30px; overflow:hidden;">
+        <img src="https://i.postimg.cc/JyQNwnRX/IMG-0397.jpg" alt="Hero Image" style="width:100%; height:100%; object-fit:cover; border-radius:30px;">
+    </div>
 </section>
 
 <section id="about" class="about-box">
