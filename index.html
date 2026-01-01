@@ -80,59 +80,30 @@ nav a { color: white; text-decoration: none; margin: 0 10px; font-weight: bold; 
 @keyframes wiggle { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
 .error-wiggle { animation: wiggle 0.3s ease-in-out; border: 2px solid white !important; }
 
+/* Custom Section Styling */
 .upload-area { border: 4px dashed white; background: var(--button-blue); border-radius: 30px; padding: 40px; margin: 20px auto; max-width: 500px; }
+.custom-form-container { display: flex; flex-direction: column; gap: 10px; }
 
-/* Toast notification */
 #toast {
     position: fixed; bottom: 20px; right: 20px; background: var(--accent-yellow);
     color: #333; padding: 15px 20px; border-radius: 20px; font-weight: bold;
     display: none; z-index: 5000; box-shadow: 0 5px 15px rgba(0,0,0,0.3);
 }
 
-/* Corner +1 badge */
 .corner-badge {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    background: var(--accent-yellow);
-    color: #333;
-    font-weight: bold;
-    padding: 5px 10px;
-    border-radius: 50%;
-    font-size: 0.8rem;
-    opacity: 0;
-    pointer-events: none;
-    transition: all 0.3s ease;
+    position: absolute; top: 10px; left: 10px; background: var(--accent-yellow);
+    color: #333; font-weight: bold; padding: 5px 10px; border-radius: 50%;
+    font-size: 0.8rem; opacity: 0; pointer-events: none; transition: all 0.3s ease;
 }
 
-/* Header cart floating badge */
 #cart-btn { position: relative; display: inline-block; }
-#cart-badge {
-    position: absolute;
-    top: -5px;
-    right: -5px;
-    background: var(--accent-yellow);
-    color: #333;
-    font-weight: bold;
-    padding: 5px 8px;
-    border-radius: 50%;
-    font-size: 0.8rem;
-    opacity: 0;
-    pointer-events: none;
-    animation: floatFade 1.5s forwards;
-}
-@keyframes floatFade {
-    0% { transform: translateY(0); opacity: 1; }
-    50% { transform: translateY(-20px); opacity: 1; }
-    100% { transform: translateY(-30px); opacity: 0; }
-}
 </style>
 </head>
 <body>
 
 <header>
     <div class="header-left">
-        <img src="https://i.postimg.cc/K4WYY2zM/IMG-0598.jpg" alt="Logo" class="logo-img">
+        <img src="https://i.postimg.cc/K4WYY2zM/IMG-0598.jpg" alt="Quinntessential 3D Logo" class="logo-img">
         <div style="font-size: 1.5rem; font-weight: bold;">Quinntessential 3D</div>
     </div>
     <nav>
@@ -150,13 +121,17 @@ nav a { color: white; text-decoration: none; margin: 0 10px; font-weight: bold; 
 
 <div id="checkout-modal">
     <h2 style="margin-top:0">Delivery Info</h2>
-    <form id="checkout-form" method="POST" action="https://formspree.io/f/mpqzlnzy">
-        <input type="text" name="address" id="cust-address" class="modal-input" placeholder="Street Address" required>
-        <input type="text" name="postal" id="cust-postal" class="modal-input" placeholder="Postal Code" required>
-        <input type="text" name="city" id="cust-city" class="modal-input" placeholder="City" required>
-        <input type="tel" name="phone" id="cust-phone" class="modal-input" placeholder="Phone Number" required>
-        <input type="email" name="email" id="cust-email" class="modal-input" placeholder="Your Email" required>
-        <input type="hidden" name="order" id="order-data">
+    <form id="checkout-form" method="POST" action="https://formspree.io/f/mpqzlnzy" enctype="multipart/form-data">
+        <input type="text" name="address" class="modal-input" placeholder="Street Address" required>
+        <input type="text" name="postal" class="modal-input" placeholder="Postal Code" required>
+        <input type="text" name="city" class="modal-input" placeholder="City" required>
+        <input type="tel" name="phone" class="modal-input" placeholder="Phone Number" required>
+        <input type="email" name="email" class="modal-input" placeholder="Your Email" required>
+        
+        <input type="hidden" name="cart_contents" id="order-data">
+        
+        <input type="file" name="upload" id="final-file-input" style="display:none">
+
         <button type="submit" class="pill-button" style="width: 100%; background: var(--accent-yellow); color: #333; margin-top: 15px;">Place Order</button>
         <button type="button" class="pill-button" onclick="closeCheckout()" style="width: 100%; background: none; border: 1px solid white;">Cancel</button>
     </form>
@@ -189,49 +164,42 @@ nav a { color: white; text-decoration: none; margin: 0 10px; font-weight: bold; 
         <button class="pill-button" onclick="addItem('Glasses Holder', 'p1', '4.99$')">add to cart 🛒</button>
         <div class="corner-badge" id="badge-p1"></div>
     </div>
-    <div class="product-card" id="p2">
-        <div style="height:180px; background:#ccc; border-radius:30px;"></div>
-        <p><strong>Phone Stand</strong> 11.99$</p>
-        <select class="select-color color-dropdown"><option value="">select colour ↓</option><option>Red</option><option>Blue</option><option>Green</option><option>White</option><option>Black</option><option>Sparkly purple</option><option>Pink</option><option>gold</option><option>Yellow</option><option>Orange</option><option>Clear</option></select>
-        <button class="pill-button" onclick="addItem('Phone Stand', 'p2', '11.99$')">add to cart 🛒</button>
-        <div class="corner-badge" id="badge-p2"></div>
-    </div>
-    <div class="product-card" id="p3">
-        <div style="height:180px; background:#ccc; border-radius:30px;"></div>
-        <p><strong>SpongeBob Holder</strong> 8.99$</p>
-        <button class="pill-button" onclick="addItem('SpongeBob Holder', null, '8.99$')">add to cart 🛒</button>
-    </div>
-    <div class="product-card" id="p4">
-        <div style="height:180px; background:#ccc; border-radius:30px;"></div>
-        <p><strong>Dinosaur Holder</strong> 10.99$</p>
-        <select class="select-color color-dropdown"><option value="">select colour ↓</option><option>Green</option><option>Orange</option><option>Black</option></select>
-        <button class="pill-button" onclick="addItem('Dinosaur Holder', 'p4', '10.99$')">add to cart 🛒</button>
-        <div class="corner-badge" id="badge-p4"></div>
-    </div>
-</section>
+    </section>
 
 <section id="custom" class="upload-area">
-    <input type="file" id="fileIn" style="display:none" onchange="document.getElementById('file-msg').innerText=this.files[0].name">
-    <div onclick="document.getElementById('fileIn').click()" style="cursor:pointer">
-        <div style="font-size:40px">↑</div>
-        <h2 id="file-msg">drag or drop files</h2>
+    <h2>Custom Quote Request</h2>
+    <p>Upload your .STL or .OBJ file and I'll send you a quote!</p>
+    
+    <div class="custom-form-container">
+        <input type="file" id="fileIn" accept=".stl,.obj,.3mf" style="display:none" onchange="updateFileName()">
+        <div onclick="document.getElementById('fileIn').click()" style="cursor:pointer; border: 2px dashed #fff; padding: 20px; border-radius: 20px;">
+            <div style="font-size:40px">📄</div>
+            <h3 id="file-msg">Click to upload 3D file</h3>
+        </div>
+
+        <select class="select-color" id="c-color">
+            <option value="">Select a colour ↓</option>
+            <option>Red</option><option>Blue</option><option>Green</option><option>White</option><option>Black</option>
+            <option>Sparkly purple</option><option>Pink</option><option>gold</option><option>Yellow</option><option>Orange</option>
+        </select>
+        
+        <input type="text" id="c-note" class="modal-input" placeholder="Any special requests?">
+        
+        <button class="pill-button" onclick="addCustomToCart()" style="background: var(--accent-yellow); color: #333;">Add Custom to Cart 🛒</button>
     </div>
-    <select class="select-color" id="c-color"><option value="">Select a colour ↓</option><option>Red</option><option>Blue</option><option>Green</option><option>White</option><option>Black</option><option>Sparkly purple</option><option>Pink</option><option>gold</option><option>Yellow</option><option>Orange</option><option>Clear</option></select>
-    <input type="text" id="c-note" class="modal-input" placeholder="special requests? (optional)">
-    <button class="pill-button" onclick="addCustom()">Add Custom to Cart 🛒</button>
 </section>
 
 <div id="toast"></div>
 
 <script>
 let cart = [];
-let badgeCounts = {}; // track counts for corner badges
+let pendingFile = null;
 
 function showToast(msg){
     const toast = document.getElementById('toast');
     toast.innerText = msg;
     toast.style.display = 'block';
-    setTimeout(()=>{ toast.style.display = 'none'; }, 1500);
+    setTimeout(()=>{ toast.style.display = 'none'; }, 2000);
 }
 
 function toggleCart() { 
@@ -239,60 +207,67 @@ function toggleCart() {
     sc.style.display = (sc.style.display === 'flex') ? 'none' : 'flex';
 }
 
+function updateFileName() {
+    const file = document.getElementById('fileIn').files[0];
+    if(file) {
+        document.getElementById('file-msg').innerText = "Selected: " + file.name;
+        pendingFile = file;
+    }
+}
+
 function addItem(name, id, price) {
-    let color = "Fixed";
+    let color = "Default";
     if(id) {
         let d = document.getElementById(id).querySelector('.color-dropdown');
-        if(!d.value) { d.classList.add('error-wiggle'); setTimeout(()=>d.classList.remove('error-wiggle'),300); return; }
-        color = d.value;
+        if(d && !d.value) { 
+            d.classList.add('error-wiggle'); 
+            setTimeout(()=>d.classList.remove('error-wiggle'),300); 
+            return; 
+        }
+        color = d ? d.value : "Default";
     }
-    cart.push({name, color, price});
+    cart.push({name, color, price, type: 'standard'});
     updateCart();
-    showToast(`${name} added to cart!`);
-    showCartBadge(1);
-    if(id){
-        showBadge(id);
-    }
+    showToast(`${name} added!`);
 }
 
-function addCustom() {
-    let f = document.getElementById('fileIn').files[0];
-    let c = document.getElementById('c-color').value;
-    if(!f || !c) return alert("Upload file and pick color!");
-    cart.push({name: "Custom: "+f.name, color: c, price: "TBD", note: document.getElementById('c-note').value});
+function addCustomToCart() {
+    const file = document.getElementById('fileIn').files[0];
+    const color = document.getElementById('c-color').value;
+    
+    if(!file) return alert("Please upload a 3D file first!");
+    if(!color) return alert("Please pick a color!");
+
+    cart.push({
+        name: "CUSTOM: " + file.name,
+        color: color,
+        price: "Quote Pending",
+        note: document.getElementById('c-note').value,
+        type: 'custom'
+    });
+    
+    // Copy the file to the hidden checkout input so it sends with the form
+    const dataTransfer = new DataTransfer();
+    dataTransfer.items.add(file);
+    document.getElementById('final-file-input').files = dataTransfer.files;
+
     updateCart();
-    showToast(`Custom: ${f.name} added to cart!`);
-    showCartBadge(1);
-}
-
-function showBadge(id){
-    if(!badgeCounts[id]) badgeCounts[id] = 0;
-    badgeCounts[id]++;
-    const badge = document.getElementById(`badge-${id}`);
-    badge.innerText = badgeCounts[id];
-    badge.style.opacity = 1;
-    setTimeout(()=>{
-        badge.style.opacity = 0;
-        badgeCounts[id] = 0;
-    }, 1000);
-}
-
-function showCartBadge(num){
-    const cartBtn = document.getElementById('cart-btn');
-    const badge = document.createElement('span');
-    badge.id = 'cart-badge';
-    badge.innerText = num;
-    cartBtn.appendChild(badge);
-    setTimeout(()=>{ cartBtn.removeChild(badge); }, 1500);
+    showToast("Custom request added to cart!");
 }
 
 function updateCart() {
     document.getElementById('cart-count').innerText = cart.length;
-    document.getElementById('cart-items-list').innerHTML = cart.map((i, index) => `<div style="padding:10px 0; border-bottom:1px solid #00A8FF"><b>${i.name}</b> <span style="cursor:pointer; float:right;" onclick="removeItem(${index})">×</span><br>${i.color} - ${i.price}</div>`).join('');
-    document.getElementById('order-data').value = cart.map(i => {
-        let color = i.color || "No color";
-        return `${i.name} (${color})`;
-    }).join(', ');
+    const list = document.getElementById('cart-items-list');
+    list.innerHTML = cart.map((i, index) => `
+        <div style="padding:10px 0; border-bottom:1px solid #00A8FF">
+            <b>${i.name}</b> 
+            <span style="cursor:pointer; float:right;" onclick="removeItem(${index})">×</span><br>
+            ${i.color} - ${i.price}
+        </div>
+    `).join('');
+
+    // Prepare text for Formspree email
+    document.getElementById('order-data').value = cart.map(i => `${i.name} (${i.color})`).join(' | ');
 }
 
 function removeItem(index){
@@ -301,7 +276,7 @@ function removeItem(index){
 }
 
 function openCheckout() { 
-    if(cart.length === 0) return;
+    if(cart.length === 0) return alert("Cart is empty!");
     document.getElementById('checkout-modal').style.display = 'block'; 
 }
 
@@ -309,16 +284,12 @@ function closeCheckout() {
     document.getElementById('checkout-modal').style.display = 'none'; 
 }
 
+// Ensure the form doesn't submit if cart is empty
 document.getElementById('checkout-form').addEventListener('submit', function(e){
     if(cart.length === 0){
         e.preventDefault();
         alert("Your cart is empty!");
-        return;
     }
-    alert("Thank you! Your order has been submitted. You will receive a confirmation email soon.");
-    cart = [];
-    updateCart();
-    closeCheckout();
 });
 </script>
 
