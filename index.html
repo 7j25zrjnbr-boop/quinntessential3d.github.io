@@ -80,30 +80,20 @@ nav a { color: white; text-decoration: none; margin: 0 10px; font-weight: bold; 
 @keyframes wiggle { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
 .error-wiggle { animation: wiggle 0.3s ease-in-out; border: 2px solid white !important; }
 
-/* Custom Section Styling */
 .upload-area { border: 4px dashed white; background: var(--button-blue); border-radius: 30px; padding: 40px; margin: 20px auto; max-width: 500px; }
-.custom-form-container { display: flex; flex-direction: column; gap: 10px; }
 
 #toast {
     position: fixed; bottom: 20px; right: 20px; background: var(--accent-yellow);
     color: #333; padding: 15px 20px; border-radius: 20px; font-weight: bold;
     display: none; z-index: 5000; box-shadow: 0 5px 15px rgba(0,0,0,0.3);
 }
-
-.corner-badge {
-    position: absolute; top: 10px; left: 10px; background: var(--accent-yellow);
-    color: #333; font-weight: bold; padding: 5px 10px; border-radius: 50%;
-    font-size: 0.8rem; opacity: 0; pointer-events: none; transition: all 0.3s ease;
-}
-
-#cart-btn { position: relative; display: inline-block; }
 </style>
 </head>
 <body>
 
 <header>
     <div class="header-left">
-        <img src="https://i.postimg.cc/K4WYY2zM/IMG-0598.jpg" alt="Quinntessential 3D Logo" class="logo-img">
+        <img src="https://i.postimg.cc/K4WYY2zM/IMG-0598.jpg" alt="Logo" class="logo-img">
         <div style="font-size: 1.5rem; font-weight: bold;">Quinntessential 3D</div>
     </div>
     <nav>
@@ -121,16 +111,14 @@ nav a { color: white; text-decoration: none; margin: 0 10px; font-weight: bold; 
 
 <div id="checkout-modal">
     <h2 style="margin-top:0">Delivery Info</h2>
-    <form id="checkout-form" method="POST" action="https://formspree.io/f/mpqzlnzy" enctype="multipart/form-data">
+    <form id="checkout-form" method="POST" action="https://formspree.io/f/mpqzlnzy">
         <input type="text" name="address" class="modal-input" placeholder="Street Address" required>
         <input type="text" name="postal" class="modal-input" placeholder="Postal Code" required>
         <input type="text" name="city" class="modal-input" placeholder="City" required>
         <input type="tel" name="phone" class="modal-input" placeholder="Phone Number" required>
-        <input type="email" name="email" class="modal-input" placeholder="Your Email" required>
+        <input type="email" name="_replyto" class="modal-input" placeholder="Your Email" required>
         
-        <input type="hidden" name="cart_contents" id="order-data">
-        
-        <input type="file" name="upload" id="final-file-input" style="display:none">
+        <input type="hidden" name="Order_Summary" id="order-data">
 
         <button type="submit" class="pill-button" style="width: 100%; background: var(--accent-yellow); color: #333; margin-top: 15px;">Place Order</button>
         <button type="button" class="pill-button" onclick="closeCheckout()" style="width: 100%; background: none; border: 1px solid white;">Cancel</button>
@@ -147,7 +135,7 @@ nav a { color: white; text-decoration: none; margin: 0 10px; font-weight: bold; 
         </div>
     </div>
     <div style="width:400px; max-width:90vw; height:400px; border-radius:30px; overflow:hidden;">
-        <img src="https://i.postimg.cc/fVzXcsxf/IMG-0627.png" style="width:100%; height:100%; object-fit:cover; border-radius:30px;">
+        <img src="https://i.postimg.cc/fVzXcsxf/IMG-0627.png" style="width:100%; height:100%; object-fit:cover;">
     </div>
 </section>
 
@@ -160,32 +148,31 @@ nav a { color: white; text-decoration: none; margin: 0 10px; font-weight: bold; 
     <div class="product-card" id="p1">
         <div style="height:180px; background:#ccc; border-radius:30px;"></div>
         <p><strong>Glasses Holder</strong> 4.99$</p>
-        <select class="select-color color-dropdown"><option value="">select colour ↓</option><option>Red</option><option>Blue</option><option>Green</option><option>White</option><option>Black</option><option>Sparkly purple</option><option>Pink</option><option>gold</option><option>Yellow</option><option>Orange</option><option>Clear</option></select>
+        <select class="select-color color-dropdown">
+            <option value="">select colour ↓</option>
+            <option>Red</option><option>Blue</option><option>Green</option><option>White</option><option>Black</option>
+            <option>Sparkly purple</option><option>Pink</option><option>gold</option><option>Yellow</option>
+        </select>
         <button class="pill-button" onclick="addItem('Glasses Holder', 'p1', '4.99$')">add to cart 🛒</button>
-        <div class="corner-badge" id="badge-p1"></div>
     </div>
-    </section>
+</section>
 
 <section id="custom" class="upload-area">
     <h2>Custom Quote Request</h2>
-    <p>Upload your .STL or .OBJ file and I'll send you a quote!</p>
+    <p>Describe what you want to print. <strong>I will email you to get your .STL file</strong> and give you a price quote!</p>
     
     <div class="custom-form-container">
-        <input type="file" id="fileIn" accept=".stl,.obj,.3mf" style="display:none" onchange="updateFileName()">
-        <div onclick="document.getElementById('fileIn').click()" style="cursor:pointer; border: 2px dashed #fff; padding: 20px; border-radius: 20px;">
-            <div style="font-size:40px">📄</div>
-            <h3 id="file-msg">Click to upload 3D file</h3>
-        </div>
-
-        <select class="select-color" id="c-color">
+        <input type="text" id="c-name" class="modal-input" placeholder="What should I print? (e.g. Iron Man Mask)">
+        
+        <select class="select-color" id="c-color" style="width: 100%;">
             <option value="">Select a colour ↓</option>
             <option>Red</option><option>Blue</option><option>Green</option><option>White</option><option>Black</option>
             <option>Sparkly purple</option><option>Pink</option><option>gold</option><option>Yellow</option><option>Orange</option>
         </select>
         
-        <input type="text" id="c-note" class="modal-input" placeholder="Any special requests?">
+        <textarea id="c-note" class="modal-input" style="height: 80px; border-radius: 15px;" placeholder="Any special requests or dimensions?"></textarea>
         
-        <button class="pill-button" onclick="addCustomToCart()" style="background: var(--accent-yellow); color: #333;">Add Custom to Cart 🛒</button>
+        <button class="pill-button" onclick="addCustomToCart()" style="background: var(--accent-yellow); color: #333; width: 100%;">Add Request to Cart 🛒</button>
     </div>
 </section>
 
@@ -193,7 +180,6 @@ nav a { color: white; text-decoration: none; margin: 0 10px; font-weight: bold; 
 
 <script>
 let cart = [];
-let pendingFile = null;
 
 function showToast(msg){
     const toast = document.getElementById('toast');
@@ -207,14 +193,6 @@ function toggleCart() {
     sc.style.display = (sc.style.display === 'flex') ? 'none' : 'flex';
 }
 
-function updateFileName() {
-    const file = document.getElementById('fileIn').files[0];
-    if(file) {
-        document.getElementById('file-msg').innerText = "Selected: " + file.name;
-        pendingFile = file;
-    }
-}
-
 function addItem(name, id, price) {
     let color = "Default";
     if(id) {
@@ -224,40 +202,40 @@ function addItem(name, id, price) {
             setTimeout(()=>d.classList.remove('error-wiggle'),300); 
             return; 
         }
-        color = d ? d.value : "Default";
+        color = d.value;
     }
-    cart.push({name, color, price, type: 'standard'});
+    cart.push({name, color, price});
     updateCart();
     showToast(`${name} added!`);
 }
 
 function addCustomToCart() {
-    const file = document.getElementById('fileIn').files[0];
+    const name = document.getElementById('c-name').value;
     const color = document.getElementById('c-color').value;
-    
-    if(!file) return alert("Please upload a 3D file first!");
-    if(!color) return alert("Please pick a color!");
+    const note = document.getElementById('c-note').value;
+
+    if(!name || !color) return alert("Please provide a name and color!");
 
     cart.push({
-        name: "CUSTOM: " + file.name,
+        name: "CUSTOM: " + name,
         color: color,
         price: "Quote Pending",
-        note: document.getElementById('c-note').value,
-        type: 'custom'
+        note: note
     });
-    
-    // Copy the file to the hidden checkout input so it sends with the form
-    const dataTransfer = new DataTransfer();
-    dataTransfer.items.add(file);
-    document.getElementById('final-file-input').files = dataTransfer.files;
 
     updateCart();
-    showToast("Custom request added to cart!");
+    showToast("Custom request added! I'll email you for the file.");
+    
+    // Clear inputs
+    document.getElementById('c-name').value = "";
+    document.getElementById('c-color').value = "";
+    document.getElementById('c-note').value = "";
 }
 
 function updateCart() {
     document.getElementById('cart-count').innerText = cart.length;
     const list = document.getElementById('cart-items-list');
+    
     list.innerHTML = cart.map((i, index) => `
         <div style="padding:10px 0; border-bottom:1px solid #00A8FF">
             <b>${i.name}</b> 
@@ -266,8 +244,10 @@ function updateCart() {
         </div>
     `).join('');
 
-    // Prepare text for Formspree email
-    document.getElementById('order-data').value = cart.map(i => `${i.name} (${i.color})`).join(' | ');
+    // Prepare the text data for Formspree
+    document.getElementById('order-data').value = cart.map(i => {
+        return `Item: ${i.name} | Color: ${i.color} ${i.note ? '| Note: '+i.note : ''}`;
+    }).join('\n');
 }
 
 function removeItem(index){
@@ -276,7 +256,7 @@ function removeItem(index){
 }
 
 function openCheckout() { 
-    if(cart.length === 0) return alert("Cart is empty!");
+    if(cart.length === 0) return alert("Your cart is empty!");
     document.getElementById('checkout-modal').style.display = 'block'; 
 }
 
@@ -284,12 +264,8 @@ function closeCheckout() {
     document.getElementById('checkout-modal').style.display = 'none'; 
 }
 
-// Ensure the form doesn't submit if cart is empty
 document.getElementById('checkout-form').addEventListener('submit', function(e){
-    if(cart.length === 0){
-        e.preventDefault();
-        alert("Your cart is empty!");
-    }
+    alert("Order submitted! Check your email soon for a message from Quinn.");
 });
 </script>
 
