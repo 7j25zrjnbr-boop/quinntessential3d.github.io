@@ -80,7 +80,6 @@ nav a { color: white; text-decoration: none; margin: 0 10px; font-weight: bold; 
 @keyframes wiggle { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
 .error-wiggle { animation: wiggle 0.3s ease-in-out; border: 2px solid white !important; }
 
-/* Custom Section Matching Button Blue */
 .upload-area { 
     border: 4px dashed white; 
     background: var(--button-blue); 
@@ -124,15 +123,16 @@ nav a { color: white; text-decoration: none; margin: 0 10px; font-weight: bold; 
 </div>
 
 <div id="checkout-modal">
-    <h2 style="margin-top:0">Delivery Info</h2>
+    <h2 style="margin-top:0">Order Details</h2>
+    <p style="font-size: 0.8rem; margin-bottom: 15px;">I will email you a <strong>PayPal invoice</strong> for payment once I review your order!</p>
     <form id="checkout-form" method="POST" action="https://formspree.io/f/mpqzlnzy">
         <input type="text" name="address" class="modal-input" placeholder="Street Address" required>
         <input type="text" name="postal" class="modal-input" placeholder="Postal Code" required>
         <input type="text" name="city" class="modal-input" placeholder="City" required>
         <input type="tel" name="phone" class="modal-input" placeholder="Phone Number" required>
-        <input type="email" name="email" class="modal-input" placeholder="Your Email" required>
+        <input type="email" name="email" class="modal-input" placeholder="Your Email (for PayPal link)" required>
         <input type="hidden" name="Order_Details" id="order-data">
-        <button type="submit" class="pill-button" style="width: 100%; background: var(--accent-yellow); color: #333; margin-top: 15px;">Place Order</button>
+        <button type="submit" class="pill-button" style="width: 100%; background: var(--accent-yellow); color: #333; margin-top: 15px;">Send Order Request</button>
         <button type="button" class="pill-button" onclick="closeCheckout()" style="width: 100%; background: none; border: 1px solid white;">Cancel</button>
     </form>
 </div>
@@ -186,13 +186,14 @@ nav a { color: white; text-decoration: none; margin: 0 10px; font-weight: bold; 
 </section>
 
 <section id="custom" class="upload-area">
-    <h2>Custom Quote Request</h2>
-    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; text-align: left;">
+    <h2>Custom Orders & Quotes</h2>
+    <p>I will review your request and <strong>email you a price quote and a PayPal payment link</strong>!</p>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; text-align: left;">
         
         <div style="background: rgba(255,255,255,0.15); padding: 20px; border-radius: 20px;">
-            <h3 style="margin-top:0">1. Add to Cart</h3>
-            <p style="font-size: 0.8rem;">Tell me the name and colour. I'll email you for the .STL file after checkout!</p>
-            <input type="text" id="c-name" class="modal-input" placeholder="Item Name">
+            <h3 style="margin-top:0">Step 1: Add to Order</h3>
+            <p style="font-size: 0.8rem;">Briefly describe it here. I'll get your .STL file via email after.</p>
+            <input type="text" id="c-name" class="modal-input" placeholder="Item Name (e.g. Keychain)">
             <select id="c-color" class="select-color" style="width:100%; border: 2px solid white;">
                 <option value="">Select Colour ↓</option>
                 <option>Red</option><option>Blue</option><option>Green</option><option>White</option><option>Black</option><option>Gold</option>
@@ -201,9 +202,9 @@ nav a { color: white; text-decoration: none; margin: 0 10px; font-weight: bold; 
         </div>
 
         <div style="background: rgba(255,255,255,0.15); padding: 20px; border-radius: 20px; display: flex; flex-direction: column; justify-content: center; align-items: center;">
-            <h3 style="margin-top:0">2. Email File Now</h3>
-            <p style="font-size: 0.8rem; text-align: center;">Have your .STL or .OBJ file ready? Attach it to an email for a fast quote!</p>
-            <a href="mailto:quinntessential3d@gmail.com?subject=Custom 3D Print Request&body=Hi Quinn, I have a file I want to print. Attached is my .STL file! Item: [Name], Colour: [Colour]" class="pill-button" style="background: white; color: var(--header-blue); width: 90%; text-align: center;">📧 Email Quinn</a>
+            <h3 style="margin-top:0">Step 2: Send File</h3>
+            <p style="font-size: 0.8rem; text-align: center;">Click below to email your 3D file directly to me for a faster quote!</p>
+            <a href="mailto:quinntessential3d@gmail.com?subject=3D File for Custom Order&body=Hi Quinn, attached is my file for a [NAME] in [COLOUR]. Please send me a PayPal quote!" class="pill-button" style="background: white; color: var(--header-blue); width: 90%; text-align: center;">📧 Email My File</a>
         </div>
     </div>
 </section>
@@ -218,7 +219,7 @@ function showToast(msg){
     const toast = document.getElementById('toast');
     toast.innerText = msg;
     toast.style.display = 'block';
-    setTimeout(()=>{ toast.style.display = 'none'; }, 2000);
+    setTimeout(()=>{ toast.style.display = 'none'; }, 2500);
 }
 
 function toggleCart() { 
@@ -239,17 +240,17 @@ function addItem(name, id, price) {
     }
     cart.push({name, color, price});
     updateCart();
-    showToast(`${name} added!`);
+    showToast(`${name} added! Pay via PayPal after email.`);
     if(id) showBadge(id);
 }
 
 function addCustomToCart() {
     const name = document.getElementById('c-name').value;
     const color = document.getElementById('c-color').value;
-    if(!name || !color) return alert("Please fill in name and color!");
-    cart.push({name: "CUSTOM: " + name, color: color, price: "Quote Pending"});
+    if(!name || !color) return alert("Please enter a name and color!");
+    cart.push({name: "CUSTOM: " + name, color: color, price: "Quote Coming"});
     updateCart();
-    showToast("Custom request added to cart!");
+    showToast("Added! Check email for PayPal quote later.");
     document.getElementById('c-name').value = "";
     document.getElementById('c-color').value = "";
 }
@@ -289,6 +290,11 @@ function openCheckout() {
 function closeCheckout() { 
     document.getElementById('checkout-modal').style.display = 'none'; 
 }
+
+document.getElementById('checkout-form').addEventListener('submit', function(e){
+    // Formspree will handle the redirect, this just gives a nice alert
+    alert("Request Sent! I will email your PayPal invoice shortly.");
+});
 </script>
 
 </body>
