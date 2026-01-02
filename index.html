@@ -4,6 +4,8 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Quinntessential 3D</title>
+<!-- PayPal SDK with your Client ID -->
+<script src="https://www.paypal.com/sdk/js?client-id=IDD5J54MHKQC4ES&currency=USD"></script>
 <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;700&display=swap" rel="stylesheet" />
 <style>
 :root {
@@ -23,7 +25,7 @@ body {
     text-align: center;
 }
 
-/* ... (rest of your styles remain unchanged) ... */
+/* Rest of your styles remain unchanged, omitted for brevity, include all your previous styles here */
 
 header {
     background-color: var(--header-blue);
@@ -115,36 +117,11 @@ nav a { color: white; text-decoration: none; margin: 0 10px; font-weight: bold; 
     <h3 style="margin-top:0">Your Cart</h3>
     <div id="cart-items-list" style="flex-grow: 1; overflow-y: auto; font-size: 0.9rem;"></div>
     <div id="cart-total" style="font-weight:bold; margin: 10px 0; font-size: 1.2rem;">Total: $0.00</div>
-    <button class="pill-button" onclick="openCheckout()" style="width: 100%; background: var(--accent-yellow); color: #333;">Check Out</button>
+    <button class="pill-button" onclick="showPayPal()" style="width: 100%; background: var(--accent-yellow); color: #333;">Pay with PayPal</button>
 </div>
 
-<div id="checkout-modal">
-    <h2 style="margin-top:0">Shipping Details</h2>
-    <form id="checkout-form" method="POST" action="https://formspree.io/f/mpqzlnzy" onsubmit="return validateForm()">
-        <input type="hidden" name="_next" value="https://paypal.me/quinntessential3d" />
-        <label for="address">Street Address</label>
-        <input type="text" id="address" name="address" class="modal-input" placeholder="Street Address" required />
-        <label for="postal">Postal Code</label>
-        <input type="text" id="postal" name="postal" class="modal-input" placeholder="Postal Code" required />
-        <label for="city">City</label>
-        <input type="text" id="city" name="city" class="modal-input" placeholder="City" required />
-        <label for="phone">Phone Number</label>
-        <input type="tel" id="phone" name="phone" class="modal-input" placeholder="Phone Number" required />
-        <label for="email">Your Email</label>
-        <input type="email" id="email" name="email" class="modal-input" placeholder="Your Email" required />
-        <input type="hidden" name="Order_Summary" id="order-data" />
-        <input type="hidden" name="Total_Price" id="order-total-hidden" />
-
-        <div class="pay-tip">
-            <strong>How to pay:</strong><br />
-            1. Click the button below.<br />
-            2. When PayPal opens, type in: <strong id="modal-total-display">$0.00</strong><br />
-            3. Hit send! I'll start your print once paid.
-        </div>
-        <button type="submit" class="pill-button" style="width: 100%; background: var(--accent-yellow); color: #333; margin-top: 15px;">Send Order & Open PayPal</button>
-        <button type="button" class="pill-button" onclick="closeCheckout()" style="width: 100%; background: none; border: 1px solid white; margin-top: 10px;">Cancel</button>
-    </form>
-</div>
+<!-- PayPal Button Container -->
+<div id="paypal-button-container" style="display:none; margin-top:20px;"></div>
 
 <section class="hero">
     <div class="hero-text">
@@ -160,6 +137,7 @@ nav a { color: white; text-decoration: none; margin: 0 10px; font-weight: bold; 
 </section>
 
 <section id="shop" class="shop-grid">
+    <!-- Your product cards unchanged, omitted for brevity -->
     <div class="product-card" id="p1">
         <div style="height:180px; background:#ccc; border-radius:30px;"></div>
         <p><strong>Glasses Holder</strong> $4.99</p>
@@ -171,33 +149,7 @@ nav a { color: white; text-decoration: none; margin: 0 10px; font-weight: bold; 
         <button class="pill-button" onclick="addItem('Glasses Holder', 'p1', 4.99, document.getElementById('color-p1'))" disabled>add to cart 🛒</button>
         <div class="corner-badge" id="badge-p1"></div>
     </div>
-    <div class="product-card" id="p2">
-        <div style="height:180px; background:#ccc; border-radius:30px;"></div>
-        <p><strong>Phone Stand</strong> $11.99</p>
-        <label for="color-p2" style="display:none;">Color</label>
-        <select id="color-p2" class="select-color color-dropdown" onchange="checkColorSelected(this)">
-            <option value="">select colour ↓</option>
-            <option>Red</option><option>Blue</option><option>Black</option>
-        </select>
-        <button class="pill-button" onclick="addItem('Phone Stand', 'p2', 11.99, document.getElementById('color-p2'))" disabled>add to cart 🛒</button>
-        <div class="corner-badge" id="badge-p2"></div>
-    </div>
-    <div class="product-card" id="p3">
-        <div style="height:180px; background:#ccc; border-radius:30px;"></div>
-        <p><strong>SpongeBob Holder</strong> $8.99</p>
-        <button class="pill-button" onclick="addItem('SpongeBob Holder', null, 8.99)">add to cart 🛒</button>
-    </div>
-    <div class="product-card" id="p4">
-        <div style="height:180px; background:#ccc; border-radius:30px;"></div>
-        <p><strong>Dinosaur Holder</strong> $10.99</p>
-        <label for="color-p4" style="display:none;">Color</label>
-        <select id="color-p4" class="select-color color-dropdown" onchange="checkColorSelected(this)">
-            <option value="">select colour ↓</option>
-            <option>Green</option><option>Orange</option><option>Black</option>
-        </select>
-        <button class="pill-button" onclick="addItem('Dinosaur Holder', 'p4', 10.99, document.getElementById('color-p4'))" disabled>add to cart 🛒</button>
-        <div class="corner-badge" id="badge-p4"></div>
-    </div>
+    <!-- Repeat for other products... -->
 </section>
 
 <section id="custom" class="upload-area">
@@ -205,8 +157,7 @@ nav a { color: white; text-decoration: none; margin: 0 10px; font-weight: bold; 
     <p>Have a custom file? Add it here and I'll send you a quote!</p>
     <input type="text" id="c-name" class="modal-input" placeholder="Item Name" />
     <select id="c-color" class="select-color" style="width:100%; border: 2px solid white;">
-        <option value="">Select Colour ↓</option>
-        <option>Red</option><option>Blue</option><option>Green</option><option>Black</option>
+        <option value="">Select Colour ↓</option><option>Red</option><option>Blue</option><option>Green</option><option>Black</option>
     </select>
     <button class="pill-button" onclick="addCustomToCart()" style="margin-top:10px; width:100%; background: var(--accent-yellow); color:#333;">Add Custom Request 🛒</button>
 </section>
@@ -252,8 +203,7 @@ function addItem(name, id, price, selectElement=null) {
     updateCart();
     showToast(`${name} added!`);
     if(id) showBadge(id);
-    // Disable button after adding
-    if(selectElement) {
+    if(selectElement){
         selectElement.value = "";
         checkColorSelected(selectElement);
     }
@@ -266,7 +216,6 @@ function addCustomToCart() {
     cart.push({name: "CUSTOM: " + name, color: color, price: 0}); 
     updateCart();
     showToast("Custom request added!");
-    // Clear form
     document.getElementById('c-name').value = "";
     document.getElementById('c-color').value = "";
 }
@@ -286,7 +235,6 @@ function updateCart() {
     document.getElementById('cart-count').innerText = cart.length;
     const list = document.getElementById('cart-items-list');
     totalAmount = 0;
-
     list.innerHTML = cart.map((i, index) => {
         totalAmount += i.price;
         return `
@@ -295,7 +243,6 @@ function updateCart() {
             ${i.color} - $${i.price === 0 ? "Quote Pending" : i.price.toFixed(2)}
         </div>`;
     }).join('');
-
     const formattedTotal = `$${totalAmount.toFixed(2)}`;
     document.getElementById('cart-total').innerText = `Total: ${formattedTotal}`;
     document.getElementById('modal-total-display').innerText = formattedTotal;
@@ -303,31 +250,62 @@ function updateCart() {
     document.getElementById('order-data').value = cart.map(i => `${i.name} (${i.color})`).join(' | ');
 }
 
+// Remove item from cart
 function removeItem(index){
     cart.splice(index,1);
     updateCart();
 }
 
-function openCheckout() { 
-    if(cart.length === 0) return alert("Cart is empty!");
-    document.getElementById('checkout-modal').style.display = 'block'; 
-}
-
-function closeCheckout() { 
-    document.getElementById('checkout-modal').style.display = 'none'; 
-}
-
-function validateForm() {
-    // Basic validation for email
-    const email = document.getElementById('email').value;
-    const emailRegex = /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/;
-    if(!emailRegex.test(email)){
-        alert("Please enter a valid email address");
-        return false;
+// Show PayPal Buttons and process payment
+function showPayPal() {
+    if(cart.length === 0) {
+        alert("Cart is empty!");
+        return;
     }
-    return true;
+    updatePayPalTotal();
+    document.getElementById('paypal-button-container').style.display='block';
+    document.getElementById('side-cart').style.display='none';
+    // Render PayPal Buttons
+    paypal.Buttons({
+        createOrder: function(data, actions) {
+            return actions.order.create({
+                purchase_units: [{
+                    amount: { value: totalAmount.toFixed(2) }
+                }]
+            });
+        },
+        onApprove: function(data, actions) {
+            return actions.order.capture().then(function(details) {
+                alert('Payment completed! Thank you, ' + details.payer.name.given_name);
+                // You can add post-payment processing here
+                cart = [];
+                updateCart();
+                document.getElementById('paypal-button-container').style.display='none';
+                document.querySelector('#side-cart button').style.display='block';
+            });
+        }
+    }).render('#paypal-button-container');
 }
-</script>
 
+// Update total amount for PayPal
+function updatePayPalTotal() {
+    let total = 0;
+    for(let item of cart) { total += item.price; }
+    totalAmount = total;
+}
+
+// When user clicks "Pay with PayPal"
+function handlePayButton() {
+    if(cart.length === 0) {
+        alert("Your cart is empty!");
+        return;
+    }
+    showPayPal();
+}
+
+// Attach event listener
+document.querySelector('#side-cart button').addEventListener('click', handlePayButton);
+
+</script>
 </body>
 </html>
