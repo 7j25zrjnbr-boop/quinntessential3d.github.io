@@ -53,7 +53,7 @@ nav a { color: white; text-decoration: none; margin: 0 10px; font-weight: bold; 
 #checkout-modal {
     position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
     width: 90%; max-width: 400px; background-color: white; color: #333;
-    border-radius: 30px; padding: 30px; z-index: 3000; display: none;
+    border-radius: 30px; padding: 25px; z-index: 3000; display: none;
     box-shadow: 0 0 50px rgba(0,0,0,0.5); max-height: 90vh; overflow-y: auto;
 }
 
@@ -89,6 +89,8 @@ nav a { color: white; text-decoration: none; margin: 0 10px; font-weight: bold; 
     color: #333; font-weight: bold; padding: 5px 10px; border-radius: 50%;
     font-size: 0.8rem; opacity: 0; pointer-events: none; transition: all 0.3s ease;
 }
+
+#loading-paypal { font-size: 0.8rem; color: #666; margin: 10px 0; font-style: italic; }
 </style>
 </head>
 <body>
@@ -114,15 +116,19 @@ nav a { color: white; text-decoration: none; margin: 0 10px; font-weight: bold; 
 
 <div id="checkout-modal">
     <h2 style="margin-top:0">Shipping Details</h2>
-    <div id="summary-display" style="font-size:0.8rem; background:#eee; padding:10px; border-radius:10px; margin-bottom:10px;"></div>
-    
     <input type="text" id="cust-name" class="modal-input" placeholder="Full Name" required>
     <input type="text" id="cust-address" class="modal-input" placeholder="Street Address" required>
+    <input type="text" id="cust-city" class="modal-input" placeholder="City" required>
+    <input type="text" id="cust-postal" class="modal-input" placeholder="Postal Code" required>
+    <input type="tel" id="cust-phone" class="modal-input" placeholder="Phone Number" required>
     <input type="email" id="cust-email" class="modal-input" placeholder="Your Email" required>
     
-    <div id="paypal-button-container" style="margin-top:20px;"></div>
+    <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;">
     
-    <button type="button" class="pill-button" onclick="closeCheckout()" style="width: 100%; background: none; border: 1px solid #ccc; color:#666; margin-top: 10px;">Cancel</button>
+    <div id="loading-paypal">Loading Payment Options...</div>
+    <div id="paypal-button-container"></div>
+    
+    <button type="button" class="pill-button" onclick="closeCheckout()" style="width: 100%; background: none; border: 1px solid #ccc; color:#666; margin-top: 15px;">Cancel & Go Back</button>
 </div>
 
 <section class="hero">
@@ -151,6 +157,18 @@ nav a { color: white; text-decoration: none; margin: 0 10px; font-weight: bold; 
         <select class="select-color color-dropdown"><option value="">select colour ↓</option><option>Red</option><option>Blue</option><option>Black</option></select>
         <button class="pill-button" onclick="addItem('Phone Stand', 'p2', 11.99)">add to cart 🛒</button>
         <div class="corner-badge" id="badge-p2"></div>
+    </div>
+    <div class="product-card" id="p3">
+        <div style="height:180px; background:#ccc; border-radius:30px;"></div>
+        <p><strong>SpongeBob Holder</strong> $8.99</p>
+        <button class="pill-button" onclick="addItem('SpongeBob Holder', null, 8.99)">add to cart 🛒</button>
+    </div>
+    <div class="product-card" id="p4">
+        <div style="height:180px; background:#ccc; border-radius:30px;"></div>
+        <p><strong>Dinosaur Holder</strong> $10.99</p>
+        <select class="select-color color-dropdown"><option value="">select colour ↓</option><option>Green</option><option>Orange</option><option>Black</option></select>
+        <button class="pill-button" onclick="addItem('Dinosaur Holder', 'p4', 10.99)">add to cart 🛒</button>
+        <div class="corner-badge" id="badge-p4"></div>
     </div>
 </section>
 
@@ -233,40 +251,49 @@ function removeItem(index){
 
 function openCheckout() { 
     if(cart.length === 0) return alert("Cart is empty!");
-    document.getElementById('summary-display').innerText = "Items: " + cart.map(i => i.name).join(', ');
     document.getElementById('checkout-modal').style.display = 'block'; 
 }
 
 function closeCheckout() { document.getElementById('checkout-modal').style.display = 'none'; }
 
-// PAYPAL INTEGRATION
+// PAYPAL BUTTONS
 paypal.Buttons({
+    onInit: function(data, actions) {
+        document.getElementById('loading-paypal').style.display = 'none';
+    },
     createOrder: function(data, actions) {
+        // VALIDATION: Check if shipping fields are filled
+        if (!document.getElementById('cust-name').value || !document.getElementById('cust-address').value) {
+            alert("Please fill in your shipping details before paying!");
+            return actions.reject();
+        }
         return actions.order.create({
             purchase_units: [{
                 amount: { value: totalAmount.toFixed(2) }
             }]
         });
     },
-    onApprove: function(details) {
-        alert('Payment Successful! I will start your print soon.');
-        
-        // This sends the order details to your email via Formspree
-        fetch("https://formspree.io/f/mpqzlnzy", {
-            method: "POST",
-            body: JSON.stringify({
-                customer: document.getElementById('cust-name').value,
-                address: document.getElementById('cust-address').value,
-                email: document.getElementById('cust-email').value,
-                items: cart.map(i => `${i.name} (${i.color})`).join(', '),
-                total: totalAmount.toFixed(2)
-            }),
-            headers: { 'Accept': 'application/json' }
+    onApprove: function(data, actions) {
+        return actions.order.capture().then(function(details) {
+            alert('Success! Thank you ' + details.payer.name.given_name);
+            fetch("https://formspree.io/f/mpqzlnzy", {
+                method: "POST",
+                body: JSON.stringify({
+                    customer: document.getElementById('cust-name').value,
+                    address: document.getElementById('cust-address').value,
+                    city: document.getElementById('cust-city').value,
+                    postal: document.getElementById('cust-postal').value,
+                    phone: document.getElementById('cust-phone').value,
+                    email: document.getElementById('cust-email').value,
+                    items: cart.map(i => `${i.name} (${i.color})`).join(', '),
+                    total: totalAmount.toFixed(2)
+                }),
+                headers: { 'Accept': 'application/json' }
+            });
+            cart = [];
+            updateCart();
+            closeCheckout();
         });
-
-        cart = [];
-        updateCart();
-        closeCheckout();
     }
 }).render('#paypal-button-container');
 </script>
