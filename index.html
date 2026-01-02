@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Quinntessential 3D</title>
-<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;700&display=swap" rel="stylesheet" />
 <style>
 :root {
     --bg-orange: #F37431;
@@ -23,6 +23,8 @@ body {
     text-align: center;
 }
 
+/* ... (rest of your styles remain unchanged) ... */
+
 header {
     background-color: var(--header-blue);
     padding: 10px 5%;
@@ -34,7 +36,6 @@ header {
     align-items: center;
     border-bottom: 6px solid var(--header-line);
 }
-
 .header-left { display: flex; align-items: center; gap: 15px; }
 .logo-img { height: 50px; border-radius: 5px; }
 nav a { color: white; text-decoration: none; margin: 0 10px; font-weight: bold; }
@@ -54,12 +55,13 @@ nav a { color: white; text-decoration: none; margin: 0 10px; font-weight: bold; 
     box-shadow: 0 0 50px rgba(0,0,0,0.5);
 }
 
+/* ... (rest of your styles) ... */
+
 .modal-input {
     width: 100%; padding: 12px; margin: 8px 0; border-radius: 20px;
     border: 2px solid white; background: var(--button-blue); color: white;
     font-family: 'Fredoka'; box-sizing: border-box;
 }
-
 .modal-input::placeholder { color: rgba(255,255,255,0.7); }
 
 .hero { padding: 40px; display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 30px; }
@@ -76,6 +78,7 @@ nav a { color: white; text-decoration: none; margin: 0 10px; font-weight: bold; 
     border-radius: 50px; border: none; font-weight: bold; cursor: pointer;
     margin-top: 5px; font-family: 'Fredoka'; display: inline-block; text-decoration: none;
 }
+.pill-button:hover, .select-color:hover { opacity: 0.8; }
 
 .upload-area { border: 4px dashed white; background: var(--button-blue); border-radius: 30px; padding: 40px; margin: 20px auto; max-width: 600px; }
 
@@ -98,7 +101,7 @@ nav a { color: white; text-decoration: none; margin: 0 10px; font-weight: bold; 
 
 <header>
     <div class="header-left">
-        <img src="https://i.postimg.cc/K4WYY2zM/IMG-0598.jpg" alt="Logo" class="logo-img">
+        <img src="https://i.postimg.cc/K4WYY2zM/IMG-0598.jpg" alt="Logo" class="logo-img" />
         <div style="font-size: 1.5rem; font-weight: bold;">Quinntessential 3D</div>
     </div>
     <nav>
@@ -117,26 +120,27 @@ nav a { color: white; text-decoration: none; margin: 0 10px; font-weight: bold; 
 
 <div id="checkout-modal">
     <h2 style="margin-top:0">Shipping Details</h2>
-    <form id="checkout-form" method="POST" action="https://formspree.io/f/mpqzlnzy">
-        
-        <input type="hidden" name="_next" value="https://paypal.me/quinntessential3d">
-        
-        <input type="text" name="address" class="modal-input" placeholder="Street Address" required>
-        <input type="text" name="postal" class="modal-input" placeholder="Postal Code" required>
-        <input type="text" name="city" class="modal-input" placeholder="City" required>
-        <input type="tel" name="phone" class="modal-input" placeholder="Phone Number" required>
-        <input type="email" name="email" class="modal-input" placeholder="Your Email" required>
-        
-        <input type="hidden" name="Order_Summary" id="order-data">
-        <input type="hidden" name="Total_Price" id="order-total-hidden">
+    <form id="checkout-form" method="POST" action="https://formspree.io/f/mpqzlnzy" onsubmit="return validateForm()">
+        <input type="hidden" name="_next" value="https://paypal.me/quinntessential3d" />
+        <label for="address">Street Address</label>
+        <input type="text" id="address" name="address" class="modal-input" placeholder="Street Address" required />
+        <label for="postal">Postal Code</label>
+        <input type="text" id="postal" name="postal" class="modal-input" placeholder="Postal Code" required />
+        <label for="city">City</label>
+        <input type="text" id="city" name="city" class="modal-input" placeholder="City" required />
+        <label for="phone">Phone Number</label>
+        <input type="tel" id="phone" name="phone" class="modal-input" placeholder="Phone Number" required />
+        <label for="email">Your Email</label>
+        <input type="email" id="email" name="email" class="modal-input" placeholder="Your Email" required />
+        <input type="hidden" name="Order_Summary" id="order-data" />
+        <input type="hidden" name="Total_Price" id="order-total-hidden" />
 
         <div class="pay-tip">
-            <strong>How to pay:</strong><br>
-            1. Click the button below.<br>
-            2. When PayPal opens, type in: <strong id="modal-total-display">$0.00</strong><br>
+            <strong>How to pay:</strong><br />
+            1. Click the button below.<br />
+            2. When PayPal opens, type in: <strong id="modal-total-display">$0.00</strong><br />
             3. Hit send! I'll start your print once paid.
         </div>
-        
         <button type="submit" class="pill-button" style="width: 100%; background: var(--accent-yellow); color: #333; margin-top: 15px;">Send Order & Open PayPal</button>
         <button type="button" class="pill-button" onclick="closeCheckout()" style="width: 100%; background: none; border: 1px solid white; margin-top: 10px;">Cancel</button>
     </form>
@@ -151,7 +155,7 @@ nav a { color: white; text-decoration: none; margin: 0 10px; font-weight: bold; 
         </div>
     </div>
     <div style="width:400px; max-width:90vw; height:400px; border-radius:30px; overflow:hidden;">
-        <img src="https://i.postimg.cc/fVzXcsxf/IMG-0627.png" style="width:100%; height:100%; object-fit:cover; border-radius:30px;">
+        <img src="https://i.postimg.cc/fVzXcsxf/IMG-0627.png" style="width:100%; height:100%; object-fit:cover; border-radius:30px;" alt="3D Print Illustration" />
     </div>
 </section>
 
@@ -159,15 +163,23 @@ nav a { color: white; text-decoration: none; margin: 0 10px; font-weight: bold; 
     <div class="product-card" id="p1">
         <div style="height:180px; background:#ccc; border-radius:30px;"></div>
         <p><strong>Glasses Holder</strong> $4.99</p>
-        <select class="select-color color-dropdown"><option value="">select colour ↓</option><option>Red</option><option>Blue</option><option>Green</option><option>White</option><option>Black</option><option>Gold</option></select>
-        <button class="pill-button" onclick="addItem('Glasses Holder', 'p1', 4.99)">add to cart 🛒</button>
+        <label for="color-p1" style="display:none;">Color</label>
+        <select id="color-p1" class="select-color color-dropdown" onchange="checkColorSelected(this)">
+            <option value="">select colour ↓</option>
+            <option>Red</option><option>Blue</option><option>Green</option><option>White</option><option>Black</option><option>Gold</option>
+        </select>
+        <button class="pill-button" onclick="addItem('Glasses Holder', 'p1', 4.99, document.getElementById('color-p1'))" disabled>add to cart 🛒</button>
         <div class="corner-badge" id="badge-p1"></div>
     </div>
     <div class="product-card" id="p2">
         <div style="height:180px; background:#ccc; border-radius:30px;"></div>
         <p><strong>Phone Stand</strong> $11.99</p>
-        <select class="select-color color-dropdown"><option value="">select colour ↓</option><option>Red</option><option>Blue</option><option>Black</option></select>
-        <button class="pill-button" onclick="addItem('Phone Stand', 'p2', 11.99)">add to cart 🛒</button>
+        <label for="color-p2" style="display:none;">Color</label>
+        <select id="color-p2" class="select-color color-dropdown" onchange="checkColorSelected(this)">
+            <option value="">select colour ↓</option>
+            <option>Red</option><option>Blue</option><option>Black</option>
+        </select>
+        <button class="pill-button" onclick="addItem('Phone Stand', 'p2', 11.99, document.getElementById('color-p2'))" disabled>add to cart 🛒</button>
         <div class="corner-badge" id="badge-p2"></div>
     </div>
     <div class="product-card" id="p3">
@@ -178,8 +190,12 @@ nav a { color: white; text-decoration: none; margin: 0 10px; font-weight: bold; 
     <div class="product-card" id="p4">
         <div style="height:180px; background:#ccc; border-radius:30px;"></div>
         <p><strong>Dinosaur Holder</strong> $10.99</p>
-        <select class="select-color color-dropdown"><option value="">select colour ↓</option><option>Green</option><option>Orange</option><option>Black</option></select>
-        <button class="pill-button" onclick="addItem('Dinosaur Holder', 'p4', 10.99)">add to cart 🛒</button>
+        <label for="color-p4" style="display:none;">Color</label>
+        <select id="color-p4" class="select-color color-dropdown" onchange="checkColorSelected(this)">
+            <option value="">select colour ↓</option>
+            <option>Green</option><option>Orange</option><option>Black</option>
+        </select>
+        <button class="pill-button" onclick="addItem('Dinosaur Holder', 'p4', 10.99, document.getElementById('color-p4'))" disabled>add to cart 🛒</button>
         <div class="corner-badge" id="badge-p4"></div>
     </div>
 </section>
@@ -187,9 +203,10 @@ nav a { color: white; text-decoration: none; margin: 0 10px; font-weight: bold; 
 <section id="custom" class="upload-area">
     <h2>Custom Print Request</h2>
     <p>Have a custom file? Add it here and I'll send you a quote!</p>
-    <input type="text" id="c-name" class="modal-input" placeholder="Item Name">
+    <input type="text" id="c-name" class="modal-input" placeholder="Item Name" />
     <select id="c-color" class="select-color" style="width:100%; border: 2px solid white;">
-        <option value="">Select Colour ↓</option><option>Red</option><option>Blue</option><option>Green</option><option>Black</option>
+        <option value="">Select Colour ↓</option>
+        <option>Red</option><option>Blue</option><option>Green</option><option>Black</option>
     </select>
     <button class="pill-button" onclick="addCustomToCart()" style="margin-top:10px; width:100%; background: var(--accent-yellow); color:#333;">Add Custom Request 🛒</button>
 </section>
@@ -213,30 +230,45 @@ function toggleCart() {
     sc.style.display = (sc.style.display === 'flex') ? 'none' : 'flex';
 }
 
-function addItem(name, id, price) {
+function checkColorSelected(selectElement){
+    const button = selectElement.nextElementSibling;
+    if(selectElement.value) {
+        button.removeAttribute('disabled');
+    } else {
+        button.setAttribute('disabled', 'disabled');
+    }
+}
+
+function addItem(name, id, price, selectElement=null) {
     let color = "Default";
-    if(id) {
-        let d = document.getElementById(id).querySelector('.color-dropdown');
-        if(d && !d.value) { 
-            d.classList.add('error-wiggle'); 
-            setTimeout(()=>d.classList.remove('error-wiggle'),300); 
-            return; 
+    if(id && selectElement) {
+        color = selectElement.value;
+        if(!color) {
+            showToast("Please select a color!");
+            return;
         }
-        color = d.value;
     }
     cart.push({name, color, price});
     updateCart();
     showToast(`${name} added!`);
     if(id) showBadge(id);
+    // Disable button after adding
+    if(selectElement) {
+        selectElement.value = "";
+        checkColorSelected(selectElement);
+    }
 }
 
 function addCustomToCart() {
-    const name = document.getElementById('c-name').value;
+    const name = document.getElementById('c-name').value.trim();
     const color = document.getElementById('c-color').value;
     if(!name || !color) return alert("Fill in details!");
     cart.push({name: "CUSTOM: " + name, color: color, price: 0}); 
     updateCart();
     showToast("Custom request added!");
+    // Clear form
+    document.getElementById('c-name').value = "";
+    document.getElementById('c-color').value = "";
 }
 
 function showBadge(id){
@@ -267,7 +299,6 @@ function updateCart() {
     const formattedTotal = `$${totalAmount.toFixed(2)}`;
     document.getElementById('cart-total').innerText = `Total: ${formattedTotal}`;
     document.getElementById('modal-total-display').innerText = formattedTotal;
-    
     document.getElementById('order-total-hidden').value = formattedTotal;
     document.getElementById('order-data').value = cart.map(i => `${i.name} (${i.color})`).join(' | ');
 }
@@ -284,6 +315,17 @@ function openCheckout() {
 
 function closeCheckout() { 
     document.getElementById('checkout-modal').style.display = 'none'; 
+}
+
+function validateForm() {
+    // Basic validation for email
+    const email = document.getElementById('email').value;
+    const emailRegex = /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/;
+    if(!emailRegex.test(email)){
+        alert("Please enter a valid email address");
+        return false;
+    }
+    return true;
 }
 </script>
 
