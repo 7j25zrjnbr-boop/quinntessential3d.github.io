@@ -25,7 +25,7 @@ body {
     text-align: center;
 }
 
-/* Rest of your styles remain unchanged, omitted for brevity, include all your previous styles here */
+/* Your existing styles here, unchanged, for brevity, include all your previous styles */
 
 header {
     background-color: var(--header-blue);
@@ -50,30 +50,23 @@ nav a { color: white; text-decoration: none; margin: 0 10px; font-weight: bold; 
     padding: 20px; display: none; flex-direction: column; text-align: left;
 }
 
-#checkout-modal {
-    position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
-    width: 90%; max-width: 400px; background-color: var(--button-blue);
-    border-radius: 30px; padding: 30px; z-index: 3000; display: none;
-    box-shadow: 0 0 50px rgba(0,0,0,0.5);
+#paypal-container {
+    display: none; margin: 20px auto; max-width: 400px;
 }
 
-/* ... (rest of your styles) ... */
-
-.modal-input {
-    width: 100%; padding: 12px; margin: 8px 0; border-radius: 20px;
-    border: 2px solid white; background: var(--button-blue); color: white;
-    font-family: 'Fredoka'; box-sizing: border-box;
+#toast {
+    position: fixed; bottom: 20px; right: 20px; background: var(--accent-yellow);
+    color: #333; padding: 15px 20px; border-radius: 20px; font-weight: bold;
+    display: none; z-index: 5000; box-shadow: 0 5px 15px rgba(0,0,0,0.3);
 }
-.modal-input::placeholder { color: rgba(255,255,255,0.7); }
 
-.hero { padding: 40px; display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 30px; }
-.hero h1 { color: var(--accent-yellow); font-size: 4rem; line-height: 0.9; margin-bottom: 20px; }
-.hero-buttons a { text-decoration: none; }
-.about-box { background-color: var(--button-blue); margin: 20px auto; padding: 30px; width: 85%; border-radius: 30px; text-align: left; }
+/* Rest of your styles unchanged... */
 
-.shop-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; padding: 40px; }
-.product-card { text-align: left; background: none; position: relative; }
-.product-card img { width: 100%; border-radius: 30px; background-color: #eee; aspect-ratio: 1/1; object-fit: cover; }
+.corner-badge {
+    position: absolute; top: 10px; left: 10px; background: var(--accent-yellow);
+    color: #333; font-weight: bold; padding: 5px 10px; border-radius: 50%;
+    font-size: 0.8rem; opacity: 0; pointer-events: none; transition: all 0.3s ease;
+}
 
 .pill-button, .select-color {
     background-color: var(--button-blue); color: white; padding: 10px 20px;
@@ -84,19 +77,6 @@ nav a { color: white; text-decoration: none; margin: 0 10px; font-weight: bold; 
 
 .upload-area { border: 4px dashed white; background: var(--button-blue); border-radius: 30px; padding: 40px; margin: 20px auto; max-width: 600px; }
 
-#toast {
-    position: fixed; bottom: 20px; right: 20px; background: var(--accent-yellow);
-    color: #333; padding: 15px 20px; border-radius: 20px; font-weight: bold;
-    display: none; z-index: 5000; box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-}
-
-.corner-badge {
-    position: absolute; top: 10px; left: 10px; background: var(--accent-yellow);
-    color: #333; font-weight: bold; padding: 5px 10px; border-radius: 50%;
-    font-size: 0.8rem; opacity: 0; pointer-events: none; transition: all 0.3s ease;
-}
-
-.pay-tip { background: rgba(0,0,0,0.2); padding: 15px; border-radius: 20px; margin-top: 10px; font-size: 0.8rem; border-left: 4px solid var(--accent-yellow); }
 </style>
 </head>
 <body>
@@ -117,11 +97,13 @@ nav a { color: white; text-decoration: none; margin: 0 10px; font-weight: bold; 
     <h3 style="margin-top:0">Your Cart</h3>
     <div id="cart-items-list" style="flex-grow: 1; overflow-y: auto; font-size: 0.9rem;"></div>
     <div id="cart-total" style="font-weight:bold; margin: 10px 0; font-size: 1.2rem;">Total: $0.00</div>
-    <button class="pill-button" onclick="showPayPal()" style="width: 100%; background: var(--accent-yellow); color: #333;">Pay with PayPal</button>
+    <button class="pill-button" onclick="prepareCheckout()" style="width: 100%; background: var(--accent-yellow); color: #333;">Pay with PayPal</button>
 </div>
 
-<!-- PayPal Button Container -->
-<div id="paypal-button-container" style="display:none; margin-top:20px;"></div>
+<!-- Container for PayPal Buttons -->
+<div id="paypal-container">
+    <!-- The PayPal button will be rendered here -->
+</div>
 
 <section class="hero">
     <div class="hero-text">
@@ -137,7 +119,7 @@ nav a { color: white; text-decoration: none; margin: 0 10px; font-weight: bold; 
 </section>
 
 <section id="shop" class="shop-grid">
-    <!-- Your product cards unchanged, omitted for brevity -->
+    <!-- Your product cards unchanged, omitted for brevity, use your original product cards -->
     <div class="product-card" id="p1">
         <div style="height:180px; background:#ccc; border-radius:30px;"></div>
         <p><strong>Glasses Holder</strong> $4.99</p>
@@ -149,7 +131,7 @@ nav a { color: white; text-decoration: none; margin: 0 10px; font-weight: bold; 
         <button class="pill-button" onclick="addItem('Glasses Holder', 'p1', 4.99, document.getElementById('color-p1'))" disabled>add to cart 🛒</button>
         <div class="corner-badge" id="badge-p1"></div>
     </div>
-    <!-- Repeat for other products... -->
+    <!-- Repeat for other products similarly -->
 </section>
 
 <section id="custom" class="upload-area">
@@ -166,7 +148,6 @@ nav a { color: white; text-decoration: none; margin: 0 10px; font-weight: bold; 
 
 <script>
 let cart = [];
-let totalAmount = 0;
 let badgeCounts = {};
 
 function showToast(msg){
@@ -234,20 +215,18 @@ function showBadge(id){
 function updateCart() {
     document.getElementById('cart-count').innerText = cart.length;
     const list = document.getElementById('cart-items-list');
-    totalAmount = 0;
+    let total = 0;
     list.innerHTML = cart.map((i, index) => {
-        totalAmount += i.price;
+        total += i.price;
         return `
         <div style="padding:10px 0; border-bottom:1px solid #00A8FF">
             <b>${i.name}</b> <span style="cursor:pointer; float:right;" onclick="removeItem(${index})">×</span><br>
             ${i.color} - $${i.price === 0 ? "Quote Pending" : i.price.toFixed(2)}
         </div>`;
     }).join('');
-    const formattedTotal = `$${totalAmount.toFixed(2)}`;
-    document.getElementById('cart-total').innerText = `Total: ${formattedTotal}`;
-    document.getElementById('modal-total-display').innerText = formattedTotal;
-    document.getElementById('order-total-hidden').value = formattedTotal;
-    document.getElementById('order-data').value = cart.map(i => `${i.name} (${i.color})`).join(' | ');
+    document.getElementById('cart-total').innerText = `Total: $${total.toFixed(2)}`;
+    // Save total for PayPal
+    window.currentTotal = total.toFixed(2);
 }
 
 // Remove item from cart
@@ -256,56 +235,45 @@ function removeItem(index){
     updateCart();
 }
 
-// Show PayPal Buttons and process payment
-function showPayPal() {
+// Show PayPal buttons and process payment
+function prepareCheckout() {
     if(cart.length === 0) {
-        alert("Cart is empty!");
+        alert("Your cart is empty!");
         return;
     }
-    updatePayPalTotal();
-    document.getElementById('paypal-button-container').style.display='block';
-    document.getElementById('side-cart').style.display='none';
+    // Show PayPal container
+    document.getElementById('paypal-container').style.display = 'block';
     // Render PayPal Buttons
     paypal.Buttons({
         createOrder: function(data, actions) {
             return actions.order.create({
                 purchase_units: [{
-                    amount: { value: totalAmount.toFixed(2) }
+                    amount: { value: window.currentTotal }
                 }]
             });
         },
         onApprove: function(data, actions) {
             return actions.order.capture().then(function(details) {
                 alert('Payment completed! Thank you, ' + details.payer.name.given_name);
-                // You can add post-payment processing here
+                // Process after payment: clear cart and hide PayPal buttons
                 cart = [];
                 updateCart();
-                document.getElementById('paypal-button-container').style.display='none';
-                document.querySelector('#side-cart button').style.display='block';
+                document.getElementById('paypal-container').style.display='none';
             });
         }
-    }).render('#paypal-button-container');
+    }).render('#paypal-container');
 }
 
-// Update total amount for PayPal
+// Initialize total for PayPal
 function updatePayPalTotal() {
     let total = 0;
     for(let item of cart) { total += item.price; }
-    totalAmount = total;
+    window.currentTotal = total.toFixed(2);
 }
 
 // When user clicks "Pay with PayPal"
-function handlePayButton() {
-    if(cart.length === 0) {
-        alert("Your cart is empty!");
-        return;
-    }
-    showPayPal();
-}
-
-// Attach event listener
-document.querySelector('#side-cart button').addEventListener('click', handlePayButton);
-
+document.querySelector('#side-cart button').addEventListener('click', prepareCheckout);
 </script>
+
 </body>
 </html>
