@@ -177,8 +177,7 @@ function goToStep2() {
         document.getElementById('step-1').style.display = 'none';
         document.getElementById('step-2').style.display = 'block';
         
-        // This is the fix: It clears the box and puts the buttons in ONLY when you click proceed.
-        document.getElementById('paypal-button-container').innerHTML = '';
+        // This makes the buttons show up exactly when the user is ready to pay.
         renderPaypal();
     }
 }
@@ -195,8 +194,8 @@ function requestQuote() {
     alert("Quote request sent! Check your email soon.");
 }
 
-// I put the render inside a function so we can call it in Step 2.
 function renderPaypal() {
+    document.getElementById('paypal-button-container').innerHTML = '';
     paypal.Buttons({
         createOrder: (data, actions) => {
             return actions.order.create({ purchase_units: [{ amount: { value: totalAmount.toFixed(2) } }] });
