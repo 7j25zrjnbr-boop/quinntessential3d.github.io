@@ -25,8 +25,6 @@ body {
     text-align: center;
 }
 
-/* Keep all your original styles here, unchanged, for brevity, include all your previous styles */
-
 header {
     background-color: var(--header-blue);
     padding: 10px 5%;
@@ -72,7 +70,6 @@ nav a { color: white; text-decoration: none; margin: 0 10px; font-weight: bold; 
     display: none; z-index: 5000; box-shadow: 0 5px 15px rgba(0,0,0,0.3);
 }
 
-/* Rest of your styles, unchanged */
 .corner-badge {
     position: absolute; top: 10px; left: 10px; background: var(--accent-yellow);
     color: #333; font-weight: bold; padding: 5px 10px; border-radius: 50%;
@@ -102,7 +99,7 @@ nav a { color: white; text-decoration: none; margin: 0 10px; font-weight: bold; 
     <div id="cart-btn" onclick="toggleCart()" style="font-size: 1.5rem; cursor: pointer;">🛒 <span id="cart-count">0</span></div>
 </header>
 
-<div id="side-cart" style="display:none; position:fixed; right:20px; top:80px; width:25%; min-width:250px; height:70vh; background-color:var(--header-blue); box-shadow:0 10px 30px rgba(0,0,0,0.3); border-radius:30px; padding:20px; z-index:2000; flex-direction:column;">
+<div id="side-cart">
     <div style="display:flex; justify-content:space-between; align-items:center;">
         <h3 style="margin-top:0;">Your Cart</h3>
         <button onclick="toggleCart()" style="background:none;border:none;font-size:1.5rem; cursor:pointer;">×</button>
@@ -114,12 +111,9 @@ nav a { color: white; text-decoration: none; margin: 0 10px; font-weight: bold; 
     <button class="pill-button" onclick="prepareCheckout()" style="width:100%; background:var(--accent-yellow); color:#333;">Pay with PayPal</button>
 </div>
 
-<!-- Container for PayPal Buttons -->
-<div id="paypal-container" style="display:none; max-width:400px; margin:20px auto;">
-    <!-- PayPal buttons will be rendered here -->
-</div>
+<div id="paypal-container"></div>
 
-<section class="hero" style="display:flex; align-items:center; justify-content:center; gap:40px; flex-wrap:wrap;">
+<section class="hero">
     <div style="text-align:center;">
         <h1 style="color: var(--accent-yellow);">PRINT IT<br>LOVE IT</h1>
         <div class="hero-buttons">
@@ -132,12 +126,10 @@ nav a { color: white; text-decoration: none; margin: 0 10px; font-weight: bold; 
     </div>
 </section>
 
-<section id="shop" class="shop-grid" style="display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:20px; padding:40px;">
-    <!-- Your product cards -->
+<section id="shop" class="shop-grid">
     <div class="product-card" id="p1">
         <div style="height:180px; background:#ccc; border-radius:30px;"></div>
         <p><strong>Glasses Holder</strong> $4.99</p>
-        <label for="color-p1" style="display:none;">Color</label>
         <select id="color-p1" class="select-color" onchange="checkColorSelected(this)">
             <option value="">select colour ↓</option>
             <option>Red</option><option>Blue</option><option>Green</option><option>White</option><option>Black</option><option>Gold</option>
@@ -148,7 +140,6 @@ nav a { color: white; text-decoration: none; margin: 0 10px; font-weight: bold; 
     <div class="product-card" id="p2">
         <div style="height:180px; background:#ccc; border-radius:30px;"></div>
         <p><strong>Phone Stand</strong> $11.99</p>
-        <label for="color-p2" style="display:none;">Color</label>
         <select id="color-p2" class="select-color" onchange="checkColorSelected(this)">
             <option value="">select colour ↓</option>
             <option>Red</option><option>Blue</option><option>Black</option>
@@ -158,20 +149,20 @@ nav a { color: white; text-decoration: none; margin: 0 10px; font-weight: bold; 
     </div>
 </section>
 
-<section id="custom" class="upload-area" style="padding:20px; background-color:var(--button-blue); border-radius:30px; max-width:600px; margin:auto;">
+<section id="custom" class="upload-area">
     <h2>Custom Print Request</h2>
     <p>Have a custom file? Add it here and I'll send you a quote!</p>
-    <input type="text" id="c-name" class="modal-input" placeholder="Item Name" style="width:100%; margin-bottom:10px;">
-    <select id="c-color" class="select-color" style="width:100%; border:2px solid white;">
+    <input type="text" id="c-name" placeholder="Item Name">
+    <select id="c-color">
         <option value="">Select Colour ↓</option>
         <option>Red</option><option>Blue</option><option>Green</option><option>Black</option>
     </select>
-    <button class="pill-button" onclick="addCustomToCart()" style="margin-top:10px; width:100%; background:var(--accent-yellow); color:#333;">Add Custom Request 🛒</button>
+    <button class="pill-button" onclick="addCustomToCart()">Add Custom Request 🛒</button>
 </section>
 
 <div id="toast"></div>
 
-This is for ChatGPT. Do I delete this <script>
+<script>
 let cart = [];
 let badgeCounts = {};
 
@@ -205,95 +196,4 @@ function addItem(name, id, price, selectElement=null) {
             return;
         }
     }
-    cart.push({name, color, price});
-    updateCart();
-    showToast(`${name} added!`);
-    if(id) showBadge(id);
-    if(selectElement){
-        selectElement.value="";
-        checkColorSelected(selectElement);
-    }
-}
-
-function addCustomToCart() {
-    const name = document.getElementById('c-name').value.trim();
-    const color = document.getElementById('c-color').value;
-    if(!name || !color) return alert("Fill in details!");
-    cart.push({name: "CUSTOM: " + name, color: color, price: 0});
-    updateCart();
-    showToast("Custom request added!");
-    document.getElementById('c-name').value="";
-    document.getElementById('c-color').value="";
-}
-
-function showBadge(id){
-    if(!badgeCounts[id]) badgeCounts[id]=0;
-    badgeCounts[id]++;
-    const badge = document.getElementById(`badge-${id}`);
-    if(badge){
-        badge.innerText=badgeCounts[id];
-        badge.style.opacity=1;
-        setTimeout(()=>{ badge.style.opacity=0; badgeCounts[id]=0; }, 1000);
-    }
-}
-
-function updateCart() {
-    document.getElementById('cart-count').innerText = cart.length;
-    const list = document.getElementById('cart-items-list');
-    let total=0;
-    list.innerHTML = cart.map((i, index) => {
-        total+=i.price;
-        return `
-        <div style="padding:10px 0; border-bottom:1px solid #00A8FF;">
-            <b>${i.name}</b> <span style="cursor:pointer; float:right;" onclick="removeItem(${index})">×</span><br>
-            ${i.color} - $${i.price===0 ? "Quote Pending" : i.price.toFixed(2)}
-        </div>`;
-    }).join('');
-    document.getElementById('cart-total').innerText='Total: $'+total.toFixed(2);
-    window.currentTotal=total.toFixed(2);
-}
-
-// Remove item
-function removeItem(index){
-    cart.splice(index,1);
-    updateCart();
-}
-
-// Prepare checkout: show PayPal button
-function prepareCheckout() {
-    if(cart.length===0){
-        alert("Your cart is empty!");
-        return;
-    }
-    document.getElementById('paypal-container').style.display='block';
-    renderPayPalButtons();
-}
-
-// Render PayPal Buttons
-function renderPayPalButtons() {
-    document.getElementById('paypal-container').innerHTML='';
-    paypal.Buttons({
-        createOrder: function(data, actions) {
-            return actions.order.create({
-                purchase_units: [{
-                    amount: { value: window.currentTotal }
-                }]
-            });
-        },
-        onApprove: function(data, actions) {
-            return actions.order.capture().then(function(details) {
-                alert('Payment completed! Thank you, ' + details.payer.name.given_name);
-                cart = [];
-                updateCart();
-                document.getElementById('paypal-container').style.display='none';
-            });
-        }
-    }).render('#paypal-container');
-}
-
-/* Removed duplicate PayPal button JS line to fix it */
-// document.querySelector('#side-cart button').addEventListener('click', prepareCheckout);
-</script>
-
-</body>
-</html>
+    cart.push
