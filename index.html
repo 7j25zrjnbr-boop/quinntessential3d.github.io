@@ -128,7 +128,7 @@ nav a { color: white; text-decoration: none; margin: 0 10px; font-weight: bold; 
 }
 </style>
 
-<!-- PAYPAL SDK (replace YOUR_PAYPAL_CLIENT_ID with your actual ID) -->
+<!-- PAYPAL SDK (optional) -->
 <script src="https://www.paypal.com/sdk/js?client-id=YOUR_PAYPAL_CLIENT_ID&currency=AUD"></script>
 
 </head>
@@ -232,7 +232,7 @@ nav a { color: white; text-decoration: none; margin: 0 10px; font-weight: bold; 
 
 <script>
 let cart = [];
-let badgeCounts = {}; // track counts for corner badges
+let badgeCounts = {};
 
 function showToast(msg){
     const toast = document.getElementById('toast');
@@ -241,87 +241,65 @@ function showToast(msg){
     setTimeout(()=>{ toast.style.display = 'none'; }, 1500);
 }
 
-function toggleCart() { 
-    let sc = document.getElementById('side-cart');
-    sc.style.display = (sc.style.display === 'flex') ? 'none' : 'flex';
+function toggleCart() {
+    const sc = document.getElementById('side-cart');
+    sc.style.display = sc.style.display === 'flex' ? 'none' : 'flex';
 }
 
-function addItem(name, id, price) {
+function addItem(name,id,price){
     let color = "Fixed";
-    if(id) {
-        let d = document.getElementById(id).querySelector('.color-dropdown');
-        if(!d.value) { d.classList.add('error-wiggle'); setTimeout(()=>d.classList.remove('error-wiggle'),300); return; }
-        color = d.value;
+    if(id){
+        const dropdown = document.getElementById(id).querySelector('.color-dropdown');
+        if(!dropdown.value){ dropdown.classList.add('error-wiggle'); setTimeout(()=>dropdown.classList.remove('error-wiggle'),300); return; }
+        color = dropdown.value;
     }
-    cart.push({name, color, price});
+    cart.push({name,color,price});
     updateCart();
     showToast(`${name} added to cart!`);
     showCartBadge(1);
-    if(id){
-        showBadge(id);
-    }
+    if(id) showBadge(id);
 }
 
-function addCustom() {
-    let f = document.getElementById('fileIn').files[0];
-    let c = document.getElementById('c-color').value;
-    if(!f || !c) return alert("Upload file and pick color!");
-    cart.push({name: "Custom: "+f.name, color: c, price: "TBD", note: document.getElementById('c-note').value});
+function addCustom(){
+    const f = document.getElementById('fileIn').files[0];
+    const c = document.getElementById('c-color').value;
+    if(!f || !c){ alert("Upload file and pick color!"); return; }
+    cart.push({name:"Custom: "+f.name,color:c,price:"TBD",note:document.getElementById('c-note').value});
     updateCart();
     showToast(`Custom: ${f.name} added to cart!`);
     showCartBadge(1);
 }
 
 function showBadge(id){
-    if(!badgeCounts[id]) badgeCounts[id] = 0;
+    if(!badgeCounts[id]) badgeCounts[id]=0;
     badgeCounts[id]++;
-    const badge = document.getElementById(`badge-${id}`);
-    badge.innerText = badgeCounts[id];
-    badge.style.opacity = 1;
-    setTimeout(()=>{
-        badge.style.opacity = 0;
-        badgeCounts[id] = 0;
-    }, 1000);
+    const badge=document.getElementById(`badge-${id}`);
+    badge.innerText=badgeCounts[id];
+    badge.style.opacity=1;
+    setTimeout(()=>{badge.style.opacity=0;badgeCounts[id]=0;},1000);
 }
 
 function showCartBadge(num){
-    const cartBtn = document.getElementById('cart-btn');
-    const badge = document.createElement('span');
-    badge.id = 'cart-badge';
-    badge.innerText = num;
+    const cartBtn=document.getElementById('cart-btn');
+    const badge=document.createElement('span');
+    badge.id='cart-badge';
+    badge.innerText=num;
     cartBtn.appendChild(badge);
-    setTimeout(()=>{ cartBtn.removeChild(badge); }, 1500);
+    setTimeout(()=>{cartBtn.removeChild(badge);},1500);
 }
 
-function updateCart() {
-    document.getElementById('cart-count').innerText = cart.length;
-    document.getElementById('cart-items-list').innerHTML = cart.map((i, index) => `<div style="padding:10px 0; border-bottom:1px solid #00A8FF"><b>${i.name}</b> <span style="cursor:pointer; float:right;" onclick="removeItem(${index})">×</span><br>${i.color} - ${i.price}</div>`).join('');
-    document.getElementById('order-data').value = cart.map(i => {
-        let color = i.color || "No color";
-        return `${i.name} (${color})`;
-    }).join(', ');
+function updateCart(){
+    document.getElementById('cart-count').innerText=cart.length;
+    document.getElementById('cart-items-list').innerHTML=cart.map((i,index)=>`<div style="padding:10px 0; border-bottom:1px solid #00A8FF"><b>${i.name}</b> <span style="cursor:pointer; float:right;" onclick="removeItem(${index})">×</span><br>${i.color} - ${i.price}</div>`).join('');
+    document.getElementById('order-data').value=cart.map(i=>`${i.name} (${i.color})`).join(', ');
 }
 
-function removeItem(index){
-    cart.splice(index,1);
-    updateCart();
-}
+function removeItem(index){ cart.splice(index,1); updateCart(); }
 
-function openCheckout() { 
-    if(cart.length === 0) return;
-    document.getElementById('checkout-modal').style.display = 'block'; 
-}
+function openCheckout(){ if(cart.length===0) return; document.getElementById('checkout-modal').style.display='block'; }
+function closeCheckout(){ document.getElementById('checkout-modal').style.display='none'; }
 
-function closeCheckout() { 
-    document.getElementById('checkout-modal').style.display = 'none'; 
-}
-
-document.getElementById('checkout-form').addEventListener('submit', function(e){
-    if(cart.length === 0){
-        e.preventDefault();
-        alert("Your cart is empty!");
-        return;
-    }
+document.getElementById('checkout-form').addEventListener('submit',function(e){
+    if(cart.length===0){ e.preventDefault(); alert("Your cart is empty!"); return; }
     alert("Thank you! Your order has been submitted. You will receive a confirmation email soon.");
-    cart = [];
-   
+    cart=[]
